@@ -1,0 +1,150 @@
+{
+  "routes": [
+    {
+      "route": "/admin/config.yml",
+      "allowedRoles": ["anonymous"],
+      "headers": {
+        "Content-Type": "text/yaml",
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "route": "/admin/auth-setup",
+      "allowedRoles": ["anonymous"],
+      "serve": "/admin/auth-setup.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/admin/editor",
+      "allowedRoles": ["authenticated"],
+      "serve": "/admin/editor.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/admin/visual-editor",
+      "allowedRoles": ["authenticated"],
+      "serve": "/admin/visual-editor.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/admin/editing-methods-guide",
+      "allowedRoles": ["anonymous"],
+      "serve": "/admin/editing-methods-guide.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/admin/editor-local",
+      "allowedRoles": ["anonymous"],
+      "serve": "/admin/editor-local.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/admin/editor-simple",
+      "allowedRoles": ["anonymous"],
+      "serve": "/admin/editor-simple.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/admin/blog-manager.html",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/admin/content-type-setup.html",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/admin/architecture.html",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/admin/help.html",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/admin*",
+      "allowedRoles": ["anonymous"],
+      "serve": "/admin/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/_data/*",
+      "headers": {
+        "Content-Type": "text/yaml",
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
+      "route": "/api/auth",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/test",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/config-check",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/get-file",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/save-file",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/admin/*", "/api/*", "/_data/*", "/admin/*.html", "*.{css,js,jpg,png,gif,ico,svg,yml,yaml,html}"]
+  },
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aad?post_login_redirect_uri=/admin/editor",
+      "statusCode": 302
+    },
+    "404": {
+      "rewrite": "/404.html",
+      "statusCode": 404
+    }
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".css": "text/css",
+    ".js": "application/javascript",
+    ".html": "text/html",
+    ".yml": "text/yaml",
+    ".yaml": "text/yaml"
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN"
+  },
+  "auth": {
+    "rolesSource": "/api/roles",
+    "identityProviders": {
+      "github": {
+        "registration": {
+          "clientIdSettingName": "GITHUB_CLIENT_ID",
+          "clientSecretSettingName": "GITHUB_CLIENT_SECRET"
+        }
+      },
+      "azureActiveDirectory": {
+        "registration": {
+          "openIdIssuer": "https://login.microsoftonline.com/common/v2.0",
+          "clientIdSettingName": "AZURE_CLIENT_ID",
+          "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+        }
+      }
+    }
+  }
+}

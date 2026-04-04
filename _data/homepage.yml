@@ -1,0 +1,28 @@
+hero_title: "Senior Product Manager & Strategy Leader"
+hero_subtitle: "Transforming ideas into successful products through data-driven strategy and cross-functional leadership"
+about_content: |
+  ## About Me
+  
+  I'm a senior product manager with a passion for building products that users love and businesses value. With over 8 years of experience in product strategy, data analytics, and cross-functional leadership, I've helped launch and scale products that have reached millions of users.
+
+  My approach combines rigorous data analysis with user empathy to create product strategies that drive growth and deliver exceptional user experiences. I believe in the power of cross-functional collaboration and have led teams through complex product launches, pivots, and scaling challenges.
+
+  ### Key Achievements
+  - Led product strategy for 3 major product launches with 95%+ user satisfaction
+  - Increased user engagement by 40% through data-driven feature optimization
+  - Managed cross-functional teams of 15+ engineers, designers, and analysts
+  - Developed product roadmaps that generated $10M+ in revenue growth
+
+featured_work:
+  - title: "E-commerce Platform Redesign"
+    description: "Led complete UX overhaul resulting in 25% increase in conversion rates"
+    image: "/images/ecommerce-project.jpg"
+    prd_link: "#prd-ecommerce"
+  - title: "Mobile App Analytics Dashboard"
+    description: "Designed comprehensive analytics suite for mobile app performance tracking"
+    image: "/images/analytics-dashboard.jpg"
+    prd_link: "#prd-analytics"
+  - title: "AI-Powered Recommendation Engine"
+    description: "Product strategy for machine learning recommendation system"
+    image: "/images/recommendation-engine.jpg"
+    prd_link: "#prd-recommendations"

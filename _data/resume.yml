@@ -1,0 +1,62 @@
+summary: |
+  **Senior Product Manager** with 8+ years of experience driving product strategy and execution at high-growth companies. Expert in data-driven decision making, cross-functional leadership, and user-centered design. Proven track record of launching successful products that scale to millions of users while delivering measurable business impact.
+
+experience:
+  - title: "Senior Product Manager"
+    company: "TechCorp Inc."
+    location: "San Francisco, CA"
+    start_date: "2020"
+    end_date: "Present"
+    responsibilities:
+      - "Led product strategy for core platform serving 2M+ active users"
+      - "Increased user engagement by 40% through data-driven feature optimization"
+      - "Managed cross-functional teams of 15+ engineers, designers, and analysts"
+      - "Developed and executed product roadmap generating $10M+ annual revenue"
+      - "Implemented A/B testing framework improving conversion rates by 25%"
+  
+  - title: "Product Manager"
+    company: "StartupXYZ"
+    location: "San Francisco, CA"
+    start_date: "2018"
+    end_date: "2020"
+    responsibilities:
+      - "Launched 3 major product features with 95%+ user satisfaction scores"
+      - "Conducted user research and market analysis to identify growth opportunities"
+      - "Collaborated with engineering and design teams to deliver products on time"
+      - "Established product metrics and KPIs to track performance and success"
+      - "Presented product updates and strategy to executive leadership team"
+
+  - title: "Associate Product Manager"
+    company: "Digital Solutions Co."
+    location: "Austin, TX"
+    start_date: "2016"
+    end_date: "2018"
+    responsibilities:
+      - "Supported senior PMs in product development and go-to-market strategies"
+      - "Analyzed user behavior data to inform product decisions and improvements"
+      - "Coordinated with marketing team on product launches and campaigns"
+      - "Created detailed product requirements and user stories for development"
+      - "Participated in customer interviews and usability testing sessions"
+
+skills:
+  strategy:
+    - "Product Roadmapping test"
+    - "Market Analysis"
+    - "Competitive Intelligence"
+    - "Go-to-Market Strategy"
+    - "Product Vision & Strategy"
+    - "User Story Mapping"
+  analytics:
+    - "SQL & Database Querying"
+    - "Google Analytics & Adobe Analytics"
+    - "A/B Testing & Experimentation"
+    - "Data Visualization (Tableau, PowerBI)"
+    - "Statistical Analysis"
+    - "Conversion Rate Optimization"
+  leadership:
+    - "Cross-functional Team Leadership"
+    - "Stakeholder Management"
+    - "Agile/Scrum Methodologies"
+    - "Product Backlog Management"
+    - "Executive Communication"
+    - "Mentoring & Team Development"

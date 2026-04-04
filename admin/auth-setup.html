@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Admin - Authentication Setup</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn.azure {
+            background: #0078d4;
+        }
+        .btn.azure:hover {
+            background: #106ebe;
+        }
+        .btn.github {
+            background: #333;
+        }
+        .btn.github:hover {
+            background: #24292e;
+        }
+        .status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: Monaco, monospace;
+            text-align: left;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: right; margin-bottom: 1rem;">
+            <a href="/admin/" class="btn">← Back to Admin</a>
+            <a href="/admin/editing-methods-guide" class="btn">📖 Guide</a>
+            <a href="/" class="btn">🏠 Homepage</a>
+        </div>
+
+        <div class="card">
+            <h1>🔐 Admin Authentication Setup</h1>
+            <div id="authStatus" class="status info" style="display: block;">
+                <strong>Checking authentication status...</strong>
+            </div>
+            
+            <div id="authOptions" style="display: none;">
+                <h2>Login Options</h2>
+                <p>Choose your authentication method:</p>
+                <div>
+                    <a href="#" onclick="tryAzureAuth()" class="btn azure">🏢 Login with Azure AD</a>
+                    <a href="#" onclick="tryGitHubAuth()" class="btn github">🐙 Login with GitHub</a>
+                </div>
+            </div>
+
+            <div id="authSuccess" style="display: none;">
+                <h2>✅ Authentication Successful!</h2>
+                <p>Welcome, <span id="userName"></span>!</p>
+                <p><strong>Provider:</strong> <span id="authProvider"></span></p>
+                <div style="margin: 1rem 0;">
+                    <a href="/admin/editor" class="btn" style="background: #27ae60;">🚀 Open Custom Editor</a>
+                    <a href="/.auth/logout?post_logout_redirect_uri=/admin/auth-setup" class="btn" style="background: #e74c3c;">🚪 Logout & Test Login</a>
+                </div>
+            </div>
+
+            <div id="setupInstructions" style="display: none;">
+                <h2>⚙️ Setup Required</h2>
+                <p>Your Azure AD authentication needs to be configured. Here's what to do:</p>
+                
+                <h3>1. Set Environment Variables in Azure Portal</h3>
+                <div class="code">
+                    AZURE_CLIENT_ID = 56ef6166-2828-42e2-a302-dbec5e409201<br>
+                    AZURE_CLIENT_SECRET = [Your Azure AD App Secret]
+                </div>
+                
+                <h3>2. Add Redirect URI to Azure AD App</h3>
+                <div class="code">
+                    https://red-plant-033de6c1e.2.azurestaticapps.net/.auth/login/aad/callback
+                </div>
+                
+                <h3>3. Alternative: Use GitHub Authentication</h3>
+                <p>GitHub authentication might work without additional setup:</p>
+                <a href="#" onclick="tryGitHubAuth()" class="btn github">🐙 Try GitHub Login</a>
+                
+                <h3>4. Fallback: Use Prose.io</h3>
+                <p>If authentication issues persist, use Prose.io for editing:</p>
+                <a href="http://prose.io" target="_blank" class="btn">📝 Open Prose.io</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🛠️ Alternative Editing Options</h2>
+            <p>While setting up authentication, you can use these proven alternatives:</p>
+            <div>
+                <a href="http://prose.io" target="_blank" class="btn">📝 Prose.io Editor</a>
+                <a href="https://github.com/krnch/piuwebsite" target="_blank" class="btn">🐙 GitHub Direct</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let authCheckComplete = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthenticationStatus();
+        });
+
+        async function checkAuthenticationStatus() {
+            try {
+                const response = await fetch('/.auth/me');
+                const authData = await response.json();
+                
+                // Debug: Show what we got from the auth endpoint
+                console.log('Raw auth response:', authData);
+                
+                if (authData.clientPrincipal) {
+                    // User is authenticated
+                    showAuthSuccess(authData.clientPrincipal);
+                } else {
+                    // User is not authenticated
+                    console.log('No clientPrincipal found - user not authenticated');
+                    showAuthOptions();
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                showSetupInstructions('Authentication check failed. This likely means environment variables are not configured.');
+            }
+            authCheckComplete = true;
+        }
+
+        function showAuthSuccess(user) {
+            document.getElementById('authStatus').style.display = 'none';
+            document.getElementById('authSuccess').style.display = 'block';
+            document.getElementById('userName').textContent = user.userDetails || user.userId;
+            document.getElementById('authProvider').textContent = user.identityProvider || 'Unknown';
+            
+            // Debug: Show raw auth data in console
+            console.log('Authentication Data:', user);
+        }
+
+        function showAuthOptions() {
+            document.getElementById('authStatus').style.display = 'none';
+            document.getElementById('authOptions').style.display = 'block';
+        }
+
+        function showSetupInstructions(message) {
+            document.getElementById('authStatus').innerHTML = `<strong>⚠️ Setup Required:</strong> ${message}`;
+            document.getElementById('authStatus').className = 'status error';
+            document.getElementById('setupInstructions').style.display = 'block';
+        }
+
+        function tryAzureAuth() {
+            const redirectUri = encodeURIComponent(window.location.href);
+            window.location.href = `/.auth/login/aad?post_login_redirect_uri=${redirectUri}`;
+        }
+
+        function tryGitHubAuth() {
+            const redirectUri = encodeURIComponent(window.location.href);
+            window.location.href = `/.auth/login/github?post_login_redirect_uri=${redirectUri}`;
+        }
+
+        // Check for auth callback parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('code') || window.location.hash.includes('access_token')) {
+            // Looks like we're returning from an auth flow
+            setTimeout(() => {
+                if (!authCheckComplete) {
+                    checkAuthenticationStatus();
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

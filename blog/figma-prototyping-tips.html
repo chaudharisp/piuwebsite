@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Figma Prototyping Tips and Tricks - PIU Portfolio</title>
+    <meta name="description" content="Take your Figma prototyping skills to the next level with these advanced techniques">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html">PIU Portfolio</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../resume.html" class="nav-link">Resume</a>
+                <a href="../blog.html" class="nav-link">Blog</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Post -->
+    <article class="blog-post-page">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="post-category">Tools</span>
+                    <span class="post-date">
+                        <i class="fas fa-calendar"></i>
+                        February 20, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="fas fa-clock"></i>
+                        4 min read
+                    </span>
+                </div>
+                <h1 class="post-title">Advanced Figma Prototyping Tips and Tricks</h1>
+                <p class="post-subtitle">Take your Figma prototyping skills to the next level with these advanced techniques</p>
+                
+                <!-- Back to Blog -->
+                <div class="post-navigation">
+                    <a href="../blog.html" class="back-to-blog">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Blog
+                    </a>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content-wrapper">
+                <div class="post-main-content">
+                    <section class="content-section">
+                        <h2>Why Advanced Prototyping Matters</h2>
+                        <p>Prototyping in Figma has evolved far beyond simple click-through wireframes. Today's product teams need sophisticated prototypes that can validate complex interactions, test user flows, and communicate design intent with pixel-perfect precision.</p>
+                        
+                        <p>In this guide, we'll explore advanced techniques that will transform your prototypes from static mockups into dynamic, interactive experiences that closely mirror the final product.</p>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>1. Smart Animate for Seamless Transitions</h2>
+                        <p>Smart Animate is one of Figma's most powerful features for creating fluid, natural transitions between screens. Here's how to use it effectively:</p>
+                        
+                        <ul>
+                            <li><strong>Layer Matching:</strong> Ensure layers have identical names across frames for automatic animation</li>
+                            <li><strong>Property Changes:</strong> Smart Animate works with position, size, rotation, and opacity changes</li>
+                            <li><strong>Easing Curves:</strong> Use custom easing for more natural motion (ease-in-out for most cases)</li>
+                            <li><strong>Duration Control:</strong> Keep animations between 200-500ms for optimal user experience</li>
+                        </ul>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>2. Component States for Interactive Elements</h2>
+                        <p>Master component variants to create truly interactive prototypes:</p>
+                        
+                        <div class="tip-box">
+                            <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                            <p>Create button components with states like Default, Hover, Pressed, and Disabled. This allows for realistic interaction feedback in your prototypes.</p>
+                        </div>
+
+                        <h3>Creating Multi-State Components</h3>
+                        <ol>
+                            <li>Design your base component (e.g., a button)</li>
+                            <li>Add variants for different states</li>
+                            <li>Set up "On Hover" and "On Press" interactions</li>
+                            <li>Use "Change To" action to switch between states</li>
+                        </ol>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>3. Advanced Overlay Techniques</h2>
+                        <p>Overlays are crucial for modeling modals, dropdowns, and tooltips:</p>
+                        
+                        <h3>Modal Best Practices</h3>
+                        <ul>
+                            <li><strong>Background Dim:</strong> Use 40% opacity black background for focus</li>
+                            <li><strong>Animation:</strong> Combine "Dissolve" with "Move In" for polished entry</li>
+                            <li><strong>Close Triggers:</strong> Add multiple ways to close (X button, background click, ESC key)</li>
+                            <li><strong>Size Constraints:</strong> Set max-width for responsive behavior</li>
+                        </ul>
+
+                        <h3>Dropdown Menus</h3>
+                        <p>For dropdown interactions, use position: "Manual" and carefully align the overlay with the trigger element. Add subtle shadows and use "Move In" from top for natural feel.</p>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>4. Variable and Expression Magic</h2>
+                        <p>Figma's variables system enables data-driven prototypes:</p>
+                        
+                        <h3>Dynamic Content Updates</h3>
+                        <ul>
+                            <li>Create text variables for dynamic labels</li>
+                            <li>Use color variables for theme switching</li>
+                            <li>Number variables for counters and progress bars</li>
+                        </ul>
+
+                        <div class="code-block">
+                            <h4>Example: Shopping Cart Counter</h4>
+                            <p>Create a number variable "cartCount" and bind it to your cart icon badge. Use "Set Variable" actions on add/remove buttons to update the count dynamically.</p>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>5. Advanced Flow Control</h2>
+                        <p>Create sophisticated user flows with conditional logic:</p>
+                        
+                        <h3>Conditional Navigation</h3>
+                        <ul>
+                            <li><strong>If/Then Logic:</strong> Use variable conditions to show different screens</li>
+                            <li><strong>Form Validation:</strong> Show error states based on input values</li>
+                            <li><strong>User State:</strong> Different experiences for logged-in vs. guest users</li>
+                        </ul>
+
+                        <h3>Multi-Path Prototypes</h3>
+                        <p>Design prototypes that branch based on user choices. Use variable-driven conditions to create personalized experiences that adapt to user input.</p>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>6. Performance Optimization</h2>
+                        <p>Keep your prototypes fast and smooth:</p>
+                        
+                        <ul>
+                            <li><strong>Frame Limits:</strong> Keep prototypes under 50 frames for optimal performance</li>
+                            <li><strong>Image Optimization:</strong> Use compressed images and avoid oversized assets</li>
+                            <li><strong>Animation Constraints:</strong> Limit simultaneous animations to prevent lag</li>
+                            <li><strong>Component Efficiency:</strong> Reuse components instead of creating duplicates</li>
+                        </ul>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>Common Pitfalls to Avoid</h2>
+                        
+                        <div class="warning-box">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Watch Out For</h4>
+                            <ul>
+                                <li><strong>Over-animating:</strong> Too many transitions can overwhelm users</li>
+                                <li><strong>Inconsistent Timing:</strong> Use consistent durations for similar interactions</li>
+                                <li><strong>Missing States:</strong> Always include loading, error, and empty states</li>
+                                <li><strong>Platform Inconsistency:</strong> Follow platform-specific interaction patterns</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>Next Steps: Testing Your Prototypes</h2>
+                        <p>Once you've built your advanced prototype:</p>
+                        
+                        <ol>
+                            <li><strong>Device Testing:</strong> Test on actual devices, not just desktop</li>
+                            <li><strong>User Testing:</strong> Watch users interact with your prototype</li>
+                            <li><strong>Stakeholder Review:</strong> Use presentation mode for clean demos</li>
+                            <li><strong>Developer Handoff:</strong> Ensure animations are technically feasible</li>
+                        </ol>
+                    </section>
+
+                    <section class="content-section">
+                        <h2>Conclusion</h2>
+                        <p>Advanced Figma prototyping is about creating experiences that feel real. By mastering Smart Animate, component states, overlays, variables, and flow control, you can build prototypes that not only look great but also function like the final product.</p>
+                        
+                        <p>Remember: the goal isn't to use every advanced feature, but to choose the right techniques that best communicate your design intent and validate your user experience decisions.</p>
+                    </section>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="post-sidebar">
+                    <div class="sidebar-section">
+                        <h3>In This Article</h3>
+                        <ul class="table-of-contents">
+                            <li><a href="#smart-animate">Smart Animate Transitions</a></li>
+                            <li><a href="#component-states">Component States</a></li>
+                            <li><a href="#overlays">Advanced Overlays</a></li>
+                            <li><a href="#variables">Variables & Expressions</a></li>
+                            <li><a href="#flow-control">Flow Control</a></li>
+                            <li><a href="#performance">Performance Tips</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Related Articles</h3>
+                        <ul class="related-posts">
+                            <li><a href="design-systems-guide.html">Building Design Systems</a></li>
+                            <li><a href="user-research-methods.html">User Research Methods</a></li>
+                            <li><a href="design-critique-guide.html">Design Feedback</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Tools Mentioned</h3>
+                        <ul class="tools-list">
+                            <li><i class="fab fa-figma"></i> Figma</li>
+                            <li><i class="fas fa-mobile-alt"></i> Device Testing</li>
+                            <li><i class="fas fa-users"></i> User Testing</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Post Footer -->
+            <footer class="post-footer">
+                <div class="post-tags">
+                    <h4>Tags:</h4>
+                    <span class="tag">Figma</span>
+                    <span class="tag">Prototyping</span>
+                    <span class="tag">UX Design</span>
+                    <span class="tag">Tools</span>
+                    <span class="tag">Advanced</span>
+                </div>
+
+                <div class="post-share">
+                    <h4>Share this article:</h4>
+                    <div class="share-buttons">
+                        <a href="#" class="share-btn twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="share-btn linkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="share-btn facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="post-navigation-footer">
+                    <a href="../blog.html" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to All Posts
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PIU Portfolio</h3>
+                    <p>Product Manager & UX Enthusiast</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../resume.html">Resume</a></li>
+                        <li><a href="../blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Latest Posts</h4>
+                    <ul>
+                        <li><a href="design-systems-guide.html">Design Systems Guide</a></li>
+                        <li><a href="user-research-methods.html">User Research Methods</a></li>
+                        <li><a href="portfolio-tips.html">Portfolio Tips</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PIU Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

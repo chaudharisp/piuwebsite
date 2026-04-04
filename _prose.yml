@@ -1,0 +1,121 @@
+prose:
+  rooturl: ''
+  siteurl: 'https://red-plant-033de6c1e.2.azurestaticapps.net'
+  media: 'images'
+  ignore:
+    - .gitignore
+    - admin
+    - api
+    - README.md
+    - staticwebapp.config.json
+    - 'CMS_*.md'
+    - 'OLDER_*.md'
+    - 'VETERAN_*.md'
+    - 'WEB_EDITING_GUIDE.md'
+  metadata:
+    _data:
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "data"
+    _data/homepage.yml:
+      - name: "hero_title"
+        field:
+          element: "text"
+          label: "Hero Title"
+          help: "Main headline on your homepage"
+      - name: "hero_subtitle"
+        field:
+          element: "textarea"
+          label: "Hero Subtitle"
+          help: "Subtitle text below the main headline"
+      - name: "about"
+        field:
+          element: "textarea"
+          label: "About Section"
+          help: "About section content (supports Markdown)"
+    _data/resume.yml:
+      - name: "summary"
+        field:
+          element: "textarea"
+          label: "Professional Summary"
+          help: "Brief professional summary"
+      - name: "experience"
+        field:
+          element: "multiselect"
+          label: "Experience"
+          alterable: true
+    blog:
+      - name: "title"
+        field:
+          element: "text"
+          label: "Post Title"
+      - name: "date"
+        field:
+          element: "text"
+          label: "Date"
+          value: "CURRENT_DATETIME"
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "post"
+    index.html:
+      - name: "page_type"
+        field:
+          element: "hidden"
+          value: "homepage"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Page Title"
+          help: "HTML page title (appears in browser tab)"
+      - name: "description"
+        field:
+          element: "textarea"
+          label: "Meta Description"
+          help: "Page description for SEO"
+    resume.html:
+      - name: "page_type"
+        field:
+          element: "hidden"
+          value: "resume"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Page Title"
+          help: "HTML page title for resume page"
+      - name: "description"
+        field:
+          element: "textarea"
+          label: "Meta Description"
+          help: "Resume page description for SEO"
+    portfolio.html:
+      - name: "page_type"
+        field:
+          element: "hidden"
+          value: "portfolio"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Page Title"
+          help: "HTML page title for portfolio page"
+      - name: "description"
+        field:
+          element: "textarea"
+          label: "Meta Description"
+          help: "Portfolio page description for SEO"
+    contact.html:
+      - name: "page_type"
+        field:
+          element: "hidden"
+          value: "contact"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Page Title"
+          help: "HTML page title for contact page"
+      - name: "description"
+        field:
+          element: "textarea"
+          label: "Meta Description"
+          help: "Contact page description for SEO"

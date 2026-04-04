@@ -1,0 +1,16 @@
+While Netlify CMS (now Decap CMS) is designed to integrate seamlessly with Netlify's built-in Identity service, it can be configured to work with custom OAuth providers and external endpoints. The key is to run your own custom server or serverless function to handle the OAuth flow and generate the required access tokens. 
+How to use a custom OAuth provider
+To configure your CMS for a custom OAuth provider, you must set up an external server or serverless function to manage the authentication process. You will then point your CMS to this new server.
+Set up your custom OAuth application. Register your application with the OAuth identity provider (e.g., GitHub, Google) to get a unique client ID and client secret.
+Create an OAuth handler server. Set up a dedicated server or a serverless function (like Netlify Functions) to perform the standard OAuth handshake. This server will:
+Handle the initial GET request from the CMS.
+Send a signed POST request to the OAuth provider's authorization endpoint, using your client ID and client secret.
+Receive the access token from the provider.
+Configure the CMS. In your config.yml file, update the backend settings to include the base_url of your custom OAuth handler. The CMS will use this URL to initiate the authentication process. For example, if you are using a GitHub backend, your configuration would look like this:
+yaml
+backend:
+  name: github
+  repo: your-user/your-repo
+  base_url: https://your.oauth-provider-url.com
+Integrate the authentication flow. The custom OAuth server needs to send the token back to the CMS to complete the login. Open-source examples, such as netlify-cms-github-oauth-provider, exist to help with this process.
+Set environment variables. Ensure your server or function has access to the client ID and secret as environment variables for security. 

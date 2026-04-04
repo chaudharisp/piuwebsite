@@ -1,0 +1,5 @@
+[build]
+  publish = "."
+  command = "# No build needed - static site"
+
+# Git Gateway is enabled in Netlify dashboard, no plugin needed

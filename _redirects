@@ -1,0 +1,2 @@
+# Enable Netlify Git Gateway for CMS
+/.netlify/git/github/* https://github.com/:splat 200

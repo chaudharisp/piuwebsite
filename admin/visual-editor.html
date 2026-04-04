@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Page Editor - Website Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .admin-header {
+            background: #2c3e50;
+            color: white;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            position: relative;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .page-selector-dropdown {
+            background: #34495e;
+            color: white;
+            border: 1px solid #546e7a;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        
+        .editor-panel {
+            width: 50%;
+            background: white;
+            border-right: 2px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview-panel {
+            width: 50%;
+            background: #f8f9fa;
+            position: relative;
+        }
+        
+        .panel-header {
+            background: #ecf0f1;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .editor-content {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .edit-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #e9ecef;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .section-content {
+            padding: 1rem;
+            display: none;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            resize: vertical;
+        }
+        
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+        
+        .preview-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .preview-btn {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .changes-indicator {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .changes-indicator.show {
+            display: block;
+        }
+        
+        .diff-view {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .diff-view.show {
+            display: block;
+        }
+        
+        .diff-header {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+        }
+        
+        .diff-content {
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .diff-added {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .diff-removed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-message {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            display: none;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .editor-panel, .preview-panel {
+                width: 100%;
+                height: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="header-left">
+            <h1>🎨 Visual Editor</h1>
+            <select id="pageSelector" class="page-selector-dropdown" onchange="loadPage()">
+                <option value="">Select a page to edit...</option>
+                <option value="index">🏠 Home Page</option>
+                <option value="about">👤 About Page</option>
+                <option value="portfolio">💼 Portfolio Page</option>
+                <option value="contact">📧 Contact Page</option>
+            </select>
+        </div>
+        
+        <div class="header-actions">
+            <span id="userInfo" class="user-info">Not authenticated</span>
+            <button class="btn btn-warning" onclick="previewChanges()">👀 Preview Changes</button>
+            <button class="btn btn-success" onclick="saveAllChanges()">💾 Save All</button>
+            <a href="/admin/editing-methods-guide" class="btn btn-secondary">📖 Guide</a>
+            <a href="/admin/" class="btn btn-primary">← Back to Admin</a>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="editor-panel">
+            <div class="panel-header">
+                <span>📝 Edit Content</span>
+                <span id="editingPage">No page selected</span>
+            </div>
+            
+            <div class="editor-content">
+                <div id="loadingMessage">
+                    <h3>👋 Welcome to the Visual Editor!</h3>
+                    <p>Select a page from the dropdown above to start editing with live preview.</p>
+                </div>
+                
+                <div class="changes-indicator" id="changesIndicator">
+                    <strong>📝 Unsaved Changes</strong>
+                    <div id="changesList"></div>
+                </div>
+                
+                <div id="editSections"></div>
+                
+                <div class="diff-view" id="diffView">
+                    <div class="diff-header">📊 Changes Preview</div>
+                    <div class="diff-content" id="diffContent"></div>
+                </div>
+                
+                <div class="status-message" id="statusMessage"></div>
+            </div>
+        </div>
+        
+        <div class="preview-panel">
+            <div class="panel-header">
+                <span>👁️ Live Preview</span>
+                <div class="preview-controls">
+                    <button class="preview-btn" onclick="refreshPreview()">🔄 Refresh</button>
+                    <button class="preview-btn" onclick="togglePreviewSize()">📱 Mobile</button>
+                </div>
+            </div>
+            
+            <iframe id="previewFrame" class="preview-iframe" src="about:blank"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = null;
+        let originalContent = {};
+        let currentChanges = {};
+        let currentUser = null;
+
+        // Initialize the visual editor
+        document.addEventListener('DOMContentLoaded', async function() {
+            await checkAuthentication();
+        });
+
+        // Check authentication status
+        async function checkAuthentication() {
+            try {
+                const response = await fetch('/.auth/me');
+                const authData = await response.json();
+                
+                if (authData.clientPrincipal) {
+                    currentUser = authData.clientPrincipal;
+                    document.getElementById('userInfo').textContent = 
+                        `👤 ${currentUser.userDetails} (${currentUser.identityProvider})`;
+                } else {
+                    document.getElementById('userInfo').innerHTML = 
+                        '<a href="/admin/auth-setup" style="color: #f39c12;">🔐 Login Required</a>';
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                document.getElementById('userInfo').innerHTML = 
+                    '<a href="/admin/auth-setup" style="color: #e74c3c;">⚠️ Auth Error</a>';
+            }
+        }
+
+        // Load selected page for editing
+        async function loadPage() {
+            const pageSelect = document.getElementById('pageSelector');
+            const pageName = pageSelect.value;
+            
+            if (!pageName) {
+                document.getElementById('loadingMessage').style.display = 'block';
+                document.getElementById('editSections').innerHTML = '';
+                document.getElementById('previewFrame').src = 'about:blank';
+                return;
+            }
+            
+            currentPage = pageName;
+            document.getElementById('editingPage').textContent = pageSelect.options[pageSelect.selectedIndex].text;
+            document.getElementById('loadingMessage').style.display = 'none';
+            
+            try {
+                // Load page content
+                const response = await fetch(`/api/get-file?file=${pageName}.html`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                console.log('API Response:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error:', errorText);
+                    throw new Error(`Failed to load page (${response.status}): ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Loaded content for', pageName, data);
+                originalContent[pageName] = data.content;
+                
+                // Parse and create editable sections
+                createEditableSections(data.content);
+                
+                // Load preview
+                loadPreview(pageName);
+                
+            } catch (error) {
+                console.error('Load page error:', error);
+                showStatus('Error loading page: ' + error.message, 'error');
+            }
+        }
+
+        // Create editable sections from HTML content
+        function createEditableSections(htmlContent) {
+            const sections = extractEditableSections(htmlContent);
+            const sectionsContainer = document.getElementById('editSections');
+            sectionsContainer.innerHTML = '';
+            
+            sections.forEach((section, index) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'edit-section';
+                sectionDiv.innerHTML = `
+                    <div class="section-header" onclick="toggleSection(${index})">
+                        ${section.title} <span id="section-indicator-${index}">▼</span>
+                    </div>
+                    <div class="section-content" id="section-${index}">
+                        <div class="form-group">
+                            <label class="form-label">${section.label}</label>
+                            <textarea class="form-textarea" id="content-${index}" onchange="trackChanges('${section.key}', this.value)">${section.content}</textarea>
+                        </div>
+                    </div>
+                `;
+                sectionsContainer.appendChild(sectionDiv);
+            });
+        }
+
+        // Extract editable sections from HTML
+        function extractEditableSections(html) {
+            const sections = [];
+            
+            // Extract title
+            const titleMatch = html.match(/<title>(.*?)<\/title>/s);
+            if (titleMatch) {
+                sections.push({
+                    key: 'title',
+                    title: '📄 Page Title',
+                    label: 'Browser tab title',
+                    content: titleMatch[1].trim()
+                });
+            }
+            
+            // Extract main heading
+            const h1Match = html.match(/<h1[^>]*>(.*?)<\/h1>/s);
+            if (h1Match) {
+                sections.push({
+                    key: 'heading',
+                    title: '📝 Main Heading',
+                    label: 'Page main heading',
+                    content: h1Match[1].trim()
+                });
+            }
+            
+            // Extract paragraphs
+            const paragraphs = html.match(/<p[^>]*>(.*?)<\/p>/gs);
+            if (paragraphs) {
+                paragraphs.forEach((p, i) => {
+                    const content = p.replace(/<\/?p[^>]*>/g, '').trim();
+                    if (content && content.length > 10) {
+                        sections.push({
+                            key: `paragraph-${i}`,
+                            title: `💬 Paragraph ${i + 1}`,
+                            label: `Content paragraph ${i + 1}`,
+                            content: content
+                        });
+                    }
+                });
+            }
+            
+            // If no sections found, add a general content editor
+            if (sections.length === 0) {
+                sections.push({
+                    key: 'full-content',
+                    title: '📝 Full Page Content',
+                    label: 'Edit the entire page HTML',
+                    content: html
+                });
+            }
+            
+            return sections;
+        }
+
+        // Toggle section visibility
+        function toggleSection(index) {
+            const content = document.getElementById(`section-${index}`);
+            const indicator = document.getElementById(`section-indicator-${index}`);
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                indicator.textContent = '▼';
+            } else {
+                content.classList.add('active');
+                indicator.textContent = '▲';
+            }
+        }
+
+        // Track changes to content
+        function trackChanges(key, value) {
+            currentChanges[key] = value;
+            updateChangesIndicator();
+            updatePreview();
+        }
+
+        // Update changes indicator
+        function updateChangesIndicator() {
+            const indicator = document.getElementById('changesIndicator');
+            const changesList = document.getElementById('changesList');
+            
+            if (Object.keys(currentChanges).length > 0) {
+                indicator.classList.add('show');
+                changesList.innerHTML = Object.keys(currentChanges).map(key => 
+                    `<div>• ${key.replace('-', ' ').toUpperCase()}</div>`
+                ).join('');
+            } else {
+                indicator.classList.remove('show');
+            }
+        }
+
+        // Load preview iframe
+        function loadPreview(pageName) {
+            const previewFrame = document.getElementById('previewFrame');
+            const previewUrl = `https://red-plant-033de6c1e.2.azurestaticapps.net/${pageName === 'index' ? '' : pageName + '.html'}`;
+            
+            console.log('Loading preview for:', pageName, 'URL:', previewUrl);
+            
+            previewFrame.onload = function() {
+                console.log('Preview loaded successfully');
+            };
+            
+            previewFrame.onerror = function() {
+                console.error('Preview failed to load');
+                showStatus('Preview failed to load - this may be due to X-Frame-Options. Check browser console.', 'error');
+            };
+            
+            previewFrame.src = previewUrl;
+        }
+
+        // Update preview with changes
+        function updatePreview() {
+            // This would inject changes into the preview iframe
+            // For now, we'll refresh the preview
+            refreshPreview();
+        }
+
+        // Refresh preview
+        function refreshPreview() {
+            const previewFrame = document.getElementById('previewFrame');
+            previewFrame.src = previewFrame.src;
+        }
+
+        // Preview changes before saving
+        function previewChanges() {
+            if (Object.keys(currentChanges).length === 0) {
+                showStatus('No changes to preview', 'error');
+                return;
+            }
+            
+            const diffView = document.getElementById('diffView');
+            const diffContent = document.getElementById('diffContent');
+            
+            let diffText = '';
+            Object.keys(currentChanges).forEach(key => {
+                diffText += `\n=== ${key.toUpperCase()} ===\n`;
+                diffText += `NEW: ${currentChanges[key]}\n`;
+            });
+            
+            diffContent.textContent = diffText;
+            diffView.classList.add('show');
+        }
+
+        // Save all changes
+        async function saveAllChanges() {
+            if (!currentPage || Object.keys(currentChanges).length === 0) {
+                showStatus('No changes to save', 'error');
+                return;
+            }
+            
+            try {
+                // Apply changes to original content
+                let updatedContent = originalContent[currentPage];
+                
+                Object.keys(currentChanges).forEach(key => {
+                    const value = currentChanges[key];
+                    
+                    if (key === 'title') {
+                        updatedContent = updatedContent.replace(/<title>.*?<\/title>/s, `<title>${value}</title>`);
+                    } else if (key === 'heading') {
+                        updatedContent = updatedContent.replace(/<h1[^>]*>.*?<\/h1>/s, `<h1>${value}</h1>`);
+                    } else if (key.startsWith('paragraph-')) {
+                        const index = parseInt(key.split('-')[1]);
+                        const paragraphs = updatedContent.match(/<p[^>]*>.*?<\/p>/gs);
+                        if (paragraphs && paragraphs[index]) {
+                            updatedContent = updatedContent.replace(paragraphs[index], `<p>${value}</p>`);
+                        }
+                    } else if (key === 'full-content') {
+                        updatedContent = value;
+                    }
+                });
+                
+                // Save to GitHub
+                const response = await fetch('/api/save-file', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: `${currentPage}.html`,
+                        content: updatedContent,
+                        message: `Update ${currentPage} page via Visual Editor`
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to save changes');
+                
+                // Reset changes
+                currentChanges = {};
+                originalContent[currentPage] = updatedContent;
+                updateChangesIndicator();
+                document.getElementById('diffView').classList.remove('show');
+                
+                showStatus('✅ All changes saved successfully!', 'success');
+                
+                // Refresh preview after a short delay
+                setTimeout(refreshPreview, 2000);
+                
+            } catch (error) {
+                showStatus('Error saving changes: ' + error.message, 'error');
+            }
+        }
+
+        // Toggle preview size (mobile/desktop)
+        let isMobilePreview = false;
+        function togglePreviewSize() {
+            const previewFrame = document.getElementById('previewFrame');
+            const button = event.target;
+            
+            if (isMobilePreview) {
+                previewFrame.style.width = '100%';
+                previewFrame.style.margin = '0';
+                button.textContent = '📱 Mobile';
+                isMobilePreview = false;
+            } else {
+                previewFrame.style.width = '375px';
+                previewFrame.style.margin = '0 auto';
+                button.textContent = '💻 Desktop';
+                isMobilePreview = true;
+            }
+        }
+
+        // Show status message
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = message;
+            statusElement.className = `status-message status-${type}`;
+            statusElement.style.display = 'block';
+            
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

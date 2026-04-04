@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Admin - Page Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        .admin-header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-selector {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .page-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .page-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .page-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .editor-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .editor-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-textarea {
+            min-height: 200px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        
+        .save-button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .save-button:hover {
+            background: #229954;
+        }
+        
+        .status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .user-info {
+            float: right;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 0 1rem;
+            }
+            
+            .user-info {
+                float: none;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <h1>📝 Website Admin</h1>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="/admin/" style="color: #ecf0f1; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); border-radius: 4px;">← Back to Admin</a>
+            <a href="/admin/editing-methods-guide" style="color: #ecf0f1; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); border-radius: 4px;">📖 Guide</a>
+            <div class="user-info" id="userInfo">Loading user...</div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="page-selector">
+            <h2>Select Page to Edit</h2>
+            <div class="page-buttons">
+                <button class="page-button" onclick="loadPage('index')">🏠 Homepage</button>
+                <button class="page-button" onclick="loadPage('resume')">📄 Resume</button>
+                <button class="page-button" onclick="loadPage('portfolio')">💼 Portfolio</button>
+                <button class="page-button" onclick="loadPage('contact')">📧 Contact</button>
+                <button class="page-button" onclick="loadPage('data')">📊 Data Files</button>
+                <button class="page-button" onclick="showNewPageForm()">➕ New Page</button>
+            </div>
+        </div>
+
+        <!-- Page Editor -->
+        <div id="pageEditor" class="editor-section">
+            <h3 id="editorTitle">Edit Page</h3>
+            <form id="pageForm" onsubmit="savePage(event)">
+                <div class="form-group">
+                    <label class="form-label" for="pageTitle">Page Title</label>
+                    <input type="text" id="pageTitle" class="form-input" placeholder="Page title for browser tab">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="pageContent">HTML Content</label>
+                    <textarea id="pageContent" class="form-textarea" placeholder="HTML content goes here..."></textarea>
+                </div>
+                
+                <button type="submit" class="save-button">💾 Save Changes</button>
+                <div id="saveStatus" class="status-message"></div>
+            </form>
+        </div>
+
+        <!-- Data Editor -->
+        <div id="dataEditor" class="editor-section">
+            <h3>Edit Data Files</h3>
+            <div class="page-buttons" style="margin-bottom: 2rem;">
+                <button class="page-button" onclick="loadDataFile('homepage')">🏠 Homepage Data</button>
+                <button class="page-button" onclick="loadDataFile('resume')">📄 Resume Data</button>
+            </div>
+            
+            <form id="dataForm" onsubmit="saveDataFile(event)" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label" id="dataLabel">Edit Data</label>
+                    <textarea id="dataContent" class="form-textarea" placeholder="YAML content goes here..."></textarea>
+                </div>
+                
+                <button type="submit" class="save-button">💾 Save Data</button>
+                <div id="dataStatus" class="status-message"></div>
+            </form>
+        </div>
+
+        <!-- New Page Form -->
+        <div id="newPageForm" class="editor-section">
+            <h3>Create New Page</h3>
+            <form onsubmit="createNewPage(event)">
+                <div class="form-group">
+                    <label class="form-label" for="newPageName">Page Name</label>
+                    <input type="text" id="newPageName" class="form-input" placeholder="e.g., about-me, projects, blog-post" required>
+                    <small>Will create: <span id="pagePreview">your-page.html</span></small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="newPageTitle">Page Title</label>
+                    <input type="text" id="newPageTitle" class="form-input" placeholder="Page title for browser tab" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="newPageContent">HTML Content</label>
+                    <textarea id="newPageContent" class="form-textarea" placeholder="HTML content for your new page..." required></textarea>
+                </div>
+                
+                <button type="submit" class="save-button">➕ Create Page</button>
+                <div id="newPageStatus" class="status-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentPage = null;
+        let currentDataFile = null;
+
+        // Initialize admin interface
+        document.addEventListener('DOMContentLoaded', async function() {
+            await checkAuthentication();
+            setupEventListeners();
+        });
+
+        // Check if user is authenticated
+        async function checkAuthentication() {
+            try {
+                const response = await fetch('/.auth/me');
+                const authData = await response.json();
+                
+                if (authData.clientPrincipal) {
+                    currentUser = authData.clientPrincipal;
+                    document.getElementById('userInfo').textContent = 
+                        `👤 ${currentUser.userDetails} (${currentUser.identityProvider})`;
+                } else {
+                    // Show login options
+                    showLoginOptions();
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                document.getElementById('userInfo').textContent = '❌ Authentication Error';
+            }
+        }
+
+        // Show login options
+        function showLoginOptions() {
+            const loginHtml = `
+                <div style="text-align: center; padding: 2rem; background: white; border-radius: 8px; margin: 2rem;">
+                    <h2>🔐 Login Required</h2>
+                    <p>Please login to access the admin panel:</p>
+                    <div style="margin: 1rem;">
+                        <a href="/.auth/login/aad?post_login_redirect_uri=${encodeURIComponent(window.location.href)}" 
+                           style="display: inline-block; padding: 1rem 2rem; background: #0078d4; color: white; text-decoration: none; border-radius: 6px; margin: 0.5rem;">
+                            🏢 Login with Azure AD
+                        </a>
+                        <a href="/.auth/login/github?post_login_redirect_uri=${encodeURIComponent(window.location.href)}" 
+                           style="display: inline-block; padding: 1rem 2rem; background: #333; color: white; text-decoration: none; border-radius: 6px; margin: 0.5rem;">
+                            🐙 Login with GitHub
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.body.innerHTML = loginHtml;
+        }
+
+        function setupEventListeners() {
+            // Update page preview when typing new page name
+            document.getElementById('newPageName').addEventListener('input', function(e) {
+                const preview = e.target.value.trim() || 'your-page';
+                document.getElementById('pagePreview').textContent = preview + '.html';
+            });
+        }
+
+        // Load page for editing
+        async function loadPage(pageName) {
+            currentPage = pageName;
+            const filename = pageName + '.html';
+            
+            try {
+                const response = await fetch(`/api/get-file?file=${filename}`);
+                if (!response.ok) throw new Error('Failed to load page');
+                
+                const data = await response.json();
+                document.getElementById('editorTitle').textContent = `Edit ${pageName.charAt(0).toUpperCase() + pageName.slice(1)} Page`;
+                document.getElementById('pageTitle').value = data.title || '';
+                document.getElementById('pageContent').value = data.content || '';
+                
+                showEditor('pageEditor');
+            } catch (error) {
+                showStatus('saveStatus', 'Error loading page: ' + error.message, 'error');
+            }
+        }
+
+        // Load data file for editing
+        async function loadDataFile(dataType) {
+            currentDataFile = dataType;
+            const filename = `_data/${dataType}.yml`;
+            
+            try {
+                const response = await fetch(`/api/get-file?file=${filename}`);
+                if (!response.ok) throw new Error('Failed to load data file');
+                
+                const data = await response.json();
+                document.getElementById('dataLabel').textContent = `Edit ${dataType.charAt(0).toUpperCase() + dataType.slice(1)} Data`;
+                document.getElementById('dataContent').value = data.content || '';
+                document.getElementById('dataForm').style.display = 'block';
+                
+                showEditor('dataEditor');
+            } catch (error) {
+                showStatus('dataStatus', 'Error loading data: ' + error.message, 'error');
+            }
+        }
+
+        // Save page changes
+        async function savePage(event) {
+            event.preventDefault();
+            if (!currentPage) return;
+            
+            const title = document.getElementById('pageTitle').value;
+            const content = document.getElementById('pageContent').value;
+            const filename = currentPage + '.html';
+            
+            try {
+                const response = await fetch('/api/save-file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        filename: filename,
+                        title: title,
+                        content: content
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to save page');
+                
+                showStatus('saveStatus', '✅ Page saved successfully!', 'success');
+                
+                // Auto-hide success message after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('saveStatus').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                showStatus('saveStatus', 'Error saving page: ' + error.message, 'error');
+            }
+        }
+
+        // Save data file changes
+        async function saveDataFile(event) {
+            event.preventDefault();
+            if (!currentDataFile) return;
+            
+            const content = document.getElementById('dataContent').value;
+            const filename = `_data/${currentDataFile}.yml`;
+            
+            try {
+                const response = await fetch('/api/save-file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        filename: filename,
+                        content: content
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to save data file');
+                
+                showStatus('dataStatus', '✅ Data saved successfully!', 'success');
+                
+                setTimeout(() => {
+                    document.getElementById('dataStatus').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                showStatus('dataStatus', 'Error saving data: ' + error.message, 'error');
+            }
+        }
+
+        // Create new page
+        async function createNewPage(event) {
+            event.preventDefault();
+            
+            const pageName = document.getElementById('newPageName').value.trim();
+            const pageTitle = document.getElementById('newPageTitle').value;
+            const pageContent = document.getElementById('newPageContent').value;
+            const filename = pageName + '.html';
+            
+            try {
+                const response = await fetch('/api/save-file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        filename: filename,
+                        title: pageTitle,
+                        content: pageContent,
+                        isNew: true
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to create page');
+                
+                showStatus('newPageStatus', `✅ Page "${filename}" created successfully!`, 'success');
+                
+                // Clear form
+                document.getElementById('newPageName').value = '';
+                document.getElementById('newPageTitle').value = '';
+                document.getElementById('newPageContent').value = '';
+                
+                setTimeout(() => {
+                    document.getElementById('newPageStatus').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                showStatus('newPageStatus', 'Error creating page: ' + error.message, 'error');
+            }
+        }
+
+        // Show specific editor section
+        function showEditor(editorId) {
+            // Hide all editors
+            document.querySelectorAll('.editor-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected editor
+            document.getElementById(editorId).classList.add('active');
+        }
+
+        // Show new page form
+        function showNewPageForm() {
+            showEditor('newPageForm');
+        }
+
+        // Show status message
+        function showStatus(elementId, message, type) {
+            const statusElement = document.getElementById(elementId);
+            statusElement.textContent = message;
+            statusElement.className = `status-message status-${type}`;
+            statusElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

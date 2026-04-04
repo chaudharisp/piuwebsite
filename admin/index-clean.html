@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Manager</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        #status {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #nc-root {
+            background: white;
+            border-radius: 8px;
+            min-height: 600px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="status">
+        <h2>🚀 Portfolio CMS</h2>
+        <div id="status-text">Initializing...</div>
+    </div>
+    
+    <div id="nc-root"></div>
+    
+    <!-- Load Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    
+    <script>
+        // Manual initialization for better control
+        window.CMS_MANUAL_INIT = true;
+        
+        function updateStatus(message, isError = false) {
+            const statusEl = document.getElementById('status-text');
+            if (statusEl) {
+                statusEl.textContent = message;
+                statusEl.style.color = isError ? 'red' : 'black';
+            }
+            console.log(isError ? '❌' : '✅', message);
+        }
+        
+        // Wait for CMS to be ready
+        function initCMS() {
+            if (typeof CMS === 'undefined') {
+                updateStatus('Loading CMS library...');
+                setTimeout(initCMS, 100);
+                return;
+            }
+            
+            updateStatus('CMS library loaded, initializing...');
+            
+            try {
+                // Simple Decap CMS configuration - let it handle authentication natively
+                const config = {
+                    backend: {
+                        name: 'github',
+                        repo: 'krnch/piuwebsite',
+                        branch: 'main'
+                        // No custom auth - Decap CMS will use its native GitHub OAuth
+                    },
+                    load_config_file: false,
+                    media_folder: 'images/blog',
+                    public_folder: '/images/blog',
+                    collections: [
+                        {
+                            name: 'posts',
+                            label: 'Blog Posts',
+                            folder: 'blog',
+                            create: true,
+                            slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
+                            extension: 'html',
+                            format: 'frontmatter',
+                            fields: [
+                                {label: 'Title', name: 'title', widget: 'string'},
+                                {label: 'Date', name: 'date', widget: 'datetime'},
+                                {label: 'Content', name: 'body', widget: 'markdown'}
+                            ]
+                        },
+                        {
+                            name: 'homepage',
+                            label: 'Homepage',
+                            files: [
+                                {
+                                    label: 'Homepage Content',
+                                    name: 'homepage',
+                                    file: '_data/homepage.yml',
+                                    fields: [
+                                        {label: 'Hero Title', name: 'hero_title', widget: 'string'},
+                                        {label: 'Hero Subtitle', name: 'hero_subtitle', widget: 'text'},
+                                        {label: 'About Section', name: 'about', widget: 'markdown'}
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: 'resume',
+                            label: 'Resume',
+                            files: [
+                                {
+                                    label: 'Resume Data',
+                                    name: 'resume',
+                                    file: '_data/resume.yml',
+                                    fields: [
+                                        {label: 'Professional Summary', name: 'summary', widget: 'text'},
+                                        {
+                                            label: 'Experience',
+                                            name: 'experience',
+                                            widget: 'list',
+                                            fields: [
+                                                {label: 'Company', name: 'company', widget: 'string'},
+                                                {label: 'Position', name: 'position', widget: 'string'},
+                                                {label: 'Duration', name: 'duration', widget: 'string'},
+                                                {label: 'Description', name: 'description', widget: 'text'}
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                };
+                
+                console.log('Initializing Decap CMS with native GitHub authentication...');
+                
+                // Initialize CMS
+                CMS.init({ config });
+                console.log('✅ Decap CMS initialized successfully');
+                updateStatus('✅ CMS initialized! Waiting for authentication...');
+                
+            } catch (error) {
+                updateStatus('CMS initialization failed: ' + error.message, true);
+                console.error('❌ CMS initialization failed:', error);
+            }
+        }
+        
+        // Start initialization
+        initCMS();
+    </script>
+</body>
+</html>

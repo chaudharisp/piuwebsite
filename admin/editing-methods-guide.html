@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Editing Methods Guide - Website Admin</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .method-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+        .method-card.premium {
+            border-left-color: #f39c12;
+        }
+        .method-card.basic {
+            border-left-color: #27ae60;
+        }
+        .method-card.advanced {
+            border-left-color: #9b59b6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: #27ae60;
+        }
+        .btn-success:hover {
+            background: #229954;
+        }
+        .btn-warning {
+            background: #f39c12;
+        }
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .feature-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .feature-item h4 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .pros, .cons {
+            padding: 1rem;
+            border-radius: 6px;
+        }
+        .pros {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .cons {
+            background: #f8d7da;  
+            border: 1px solid #f5c6cb;
+        }
+        .pros h5, .cons h5 {
+            margin-bottom: 0.5rem;
+        }
+        .workflow-step {
+            background: #e9ecef;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        .workflow-step .step-number {
+            background: #007bff;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        .use-case-tag {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin: 0.25rem 0.25rem 0.25rem 0;
+        }
+        .use-case-tag.mobile {
+            background: #28a745;
+        }
+        .use-case-tag.quick {
+            background: #ffc107;
+            color: #212529;
+        }
+        .use-case-tag.advanced {
+            background: #6f42c1;
+        }
+        .use-case-tag.emergency {
+            background: #dc3545;
+        }
+        @media (max-width: 768px) {
+            .comparison-table {
+                font-size: 0.8rem;
+            }
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Complete Content Editing Guide</h1>
+            <p>Choose the right editing method for every situation - from quick fixes to professional content management</p>
+            <div>
+                <a href="/admin/" class="btn">← Back to Admin Dashboard</a>
+                <a href="#comparison" class="btn btn-success">🔍 Quick Comparison</a>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="method-card">
+            <h2>🎯 Multi-Method Approach</h2>
+            <p>Your website supports <strong>4 different editing methods</strong> that work together seamlessly. Each method excels in different scenarios:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>🎨 Visual Editor</h4>
+                    <p>Live preview with click-to-edit sections</p>
+                    <span class="use-case-tag advanced">Advanced</span>
+                    <span class="use-case-tag">Live Preview</span>
+                </div>
+                <div class="feature-item">
+                    <h4>⚙️ Custom Editor</h4>
+                    <p>Direct HTML and data file editing</p>
+                    <span class="use-case-tag advanced">Technical</span>
+                    <span class="use-case-tag">Flexible</span>
+                </div>
+                <div class="feature-item">
+                    <h4>📝 Prose.io</h4>
+                    <p>Simple, reliable web editor</p>
+                    <span class="use-case-tag mobile">Mobile-Friendly</span>
+                    <span class="use-case-tag quick">Quick</span>
+                </div>
+                <div class="feature-item">
+                    <h4>🐙 GitHub Direct</h4>
+                    <p>Edit files directly on GitHub</p>
+                    <span class="use-case-tag emergency">Always Works</span>
+                    <span class="use-case-tag mobile">Mobile App</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Method 1: Visual Editor -->
+        <div class="method-card advanced">
+            <h2>🎨 Visual Editor (Live Preview)</h2>
+            <p><strong>Best for:</strong> Content updates where you want to see changes in real-time</p>
+            
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✅ Pros</h5>
+                    <ul>
+                        <li>Live preview of changes</li>
+                        <li>Click-to-edit sections</li>
+                        <li>Visual diff before saving</li>
+                        <li>Mobile/desktop preview toggle</li>
+                        <li>Save multiple changes at once</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>❌ Cons</h5>
+                    <ul>
+                        <li>Requires authentication</li>
+                        <li>More complex interface</li>
+                        <li>Limited to predefined sections</li>
+                        <li>Needs modern browser</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>📋 How to Use:</h4>
+            <div class="workflow-step">
+                <span class="step-number">1</span>
+                <strong>Access:</strong> Go to <code>/admin/visual-editor</code> and login
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">2</span>
+                <strong>Select Page:</strong> Choose page from dropdown (Home, About, Portfolio, Contact)
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">3</span>
+                <strong>Edit Sections:</strong> Click section headers to expand and edit content
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">4</span>
+                <strong>Preview:</strong> See changes in real-time in the right panel
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">5</span>
+                <strong>Save:</strong> Click "Save All" to commit all changes to GitHub
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a href="/admin/visual-editor" class="btn btn-success">🎨 Open Visual Editor</a>
+                <span class="use-case-tag advanced">Requires Login</span>
+                <span class="use-case-tag">Live Preview</span>
+            </div>
+        </div>
+
+        <!-- Method 2: Custom Editor -->
+        <div class="method-card advanced">
+            <h2>⚙️ Custom Editor (Code-Focused)</h2>
+            <p><strong>Best for:</strong> Direct HTML editing, YAML data files, and technical modifications</p>
+            
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✅ Pros</h5>
+                    <ul>
+                        <li>Full control over HTML/CSS</li>
+                        <li>Edit YAML data files</li>
+                        <li>Create new pages</li>
+                        <li>Azure AD authentication</li>
+                        <li>GitHub integration</li>
+                        <li>Syntax highlighting</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>❌ Cons</h5>
+                    <ul>
+                        <li>Requires HTML knowledge</li>
+                        <li>No live preview</li>
+                        <li>More technical interface</li>
+                        <li>Authentication required</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>📋 How to Use:</h4>
+            <div class="workflow-step">
+                <span class="step-number">1</span>
+                <strong>Access:</strong> Go to <code>/admin/editor</code> and login
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">2</span>
+                <strong>Choose Task:</strong> Edit existing page, edit data files, or create new page
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">3</span>
+                <strong>Edit Code:</strong> Modify HTML, CSS, or YAML content directly
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">4</span>
+                <strong>Save:</strong> Changes are committed directly to GitHub
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">5</span>
+                <strong>Deploy:</strong> GitHub Actions automatically deploy changes
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a href="/admin/editor" class="btn">⚙️ Open Custom Editor</a>
+                <span class="use-case-tag advanced">Technical</span>
+                <span class="use-case-tag">Requires Login</span>
+            </div>
+        </div>
+
+        <!-- Method 4: Prose.io -->
+        <div class="method-card basic">
+            <h2>📝 Prose.io (Simple & Reliable)</h2>
+            <p><strong>Best for:</strong> Quick text edits, mobile editing, and when other methods aren't working</p>
+            
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✅ Pros</h5>
+                    <ul>
+                        <li>Simple, intuitive interface</li>
+                        <li>Works on mobile devices</li>
+                        <li>12+ years of reliability</li>
+                        <li>GitHub authentication</li>
+                        <li>Markdown preview</li>
+                        <li>Always available</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>❌ Cons</h5>
+                    <ul>
+                        <li>No live website preview</li>
+                        <li>Basic text editor only</li>
+                        <li>Limited file management</li>
+                        <li>No syntax highlighting for HTML</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>📋 How to Use:</h4>
+            <div class="workflow-step">
+                <span class="step-number">1</span>
+                <strong>Access:</strong> Go to <a href="http://prose.io" target="_blank">prose.io</a>
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">2</span>
+                <strong>Login:</strong> Authorize with your GitHub account
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">3</span>
+                <strong>Find Repository:</strong> Navigate to <code>krnch/piuwebsite</code>
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">4</span>
+                <strong>Edit Files:</strong> Click any file to edit (HTML, Markdown, YAML)
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">5</span>
+                <strong>Save:</strong> Changes are committed to GitHub automatically
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a href="http://prose.io" target="_blank" class="btn btn-success">📝 Open Prose.io</a>
+                <span class="use-case-tag mobile">Mobile-Friendly</span>
+                <span class="use-case-tag quick">Quick & Easy</span>
+            </div>
+        </div>
+
+        <!-- Method 5: GitHub Direct -->
+        <div class="method-card basic">
+            <h2>🐙 GitHub Direct (Emergency Backup)</h2>
+            <p><strong>Best for:</strong> Emergency fixes, when all other methods fail, or mobile app editing</p>
+            
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✅ Pros</h5>
+                    <ul>
+                        <li>Always works (99.9% uptime)</li>
+                        <li>Full version history</li>
+                        <li>Mobile app available</li>
+                        <li>File upload capability</li>
+                        <li>Branch management</li>
+                        <li>No additional authentication</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>❌ Cons</h5>
+                    <ul>
+                        <li>Basic text editor</li>
+                        <li>No live preview</li>
+                        <li>Technical interface</li>
+                        <li>Requires Git knowledge for advanced features</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>📋 How to Use:</h4>
+            <div class="workflow-step">
+                <span class="step-number">1</span>
+                <strong>Access:</strong> Go to <a href="https://github.com/krnch/piuwebsite" target="_blank">github.com/krnch/piuwebsite</a>
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">2</span>
+                <strong>Navigate:</strong> Browse folders to find the file you need
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">3</span>
+                <strong>Edit:</strong> Click the pencil icon (✏️) to edit any file
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">4</span>
+                <strong>Commit:</strong> Add commit message and click "Commit changes"
+            </div>
+            <div class="workflow-step">
+                <span class="step-number">5</span>
+                <strong>Deploy:</strong> Changes deploy automatically via GitHub Actions
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a href="https://github.com/krnch/piuwebsite" target="_blank" class="btn">🐙 Open GitHub</a>
+                <span class="use-case-tag emergency">Always Available</span>
+                <span class="use-case-tag mobile">Mobile App</span>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="method-card" id="comparison">
+            <h2>🔍 Quick Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Ease of Use</th>
+                        <th>Features</th>
+                        <th>Mobile Support</th>
+                        <th>Live Preview</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>🎨 Visual Editor</strong></td>
+                        <td>Advanced</td>
+                        <td>Live preview, click-to-edit, visual diff</td>
+                        <td>✅ Responsive</td>
+                        <td>✅ Real-time</td>
+                        <td>Content updates with preview</td>
+                    </tr>
+                    <tr>
+                        <td><strong>⚙️ Custom Editor</strong></td>
+                        <td>Advanced</td>
+                        <td>Full HTML control, YAML editing</td>
+                        <td>✅ Responsive</td>
+                        <td>❌ None</td>
+                        <td>Technical modifications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>📝 Prose.io</strong></td>
+                        <td>Easy</td>
+                        <td>Simple editing, markdown preview</td>
+                        <td>✅ Mobile-friendly</td>
+                        <td>⚠️ Basic</td>
+                        <td>Quick text edits, mobile use</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🐙 GitHub Direct</strong></td>
+                        <td>Basic</td>
+                        <td>Version control, file management</td>
+                        <td>✅ Mobile app</td>
+                        <td>❌ None</td>
+                        <td>Emergency fixes, always works</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Usage Scenarios -->
+        <div class="method-card">
+            <h2>🎯 When to Use Each Method</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>📱 Mobile Editing</h4>
+                    <p><strong>Best:</strong> Prose.io, GitHub app</p>
+                    <p><strong>Why:</strong> Touch-friendly interfaces, work offline</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🚨 Emergency Fixes</h4>
+                    <p><strong>Best:</strong> GitHub Direct</p>
+                    <p><strong>Why:</strong> Always accessible, no dependencies</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📝 Blog Writing</h4>
+                    <p><strong>Best:</strong> Prose.io or Custom Editor</p>
+                    <p><strong>Why:</strong> Simple markdown editing, file management</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🎨 Design Changes</h4>
+                    <p><strong>Best:</strong> Visual Editor, then Custom Editor</p>
+                    <p><strong>Why:</strong> Live preview, full HTML control</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📊 Data Updates</h4>
+                    <p><strong>Best:</strong> Custom Editor, then Prose.io</p>
+                    <p><strong>Why:</strong> YAML editing, structured data</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🔄 Version Control</h4>
+                    <p><strong>Best:</strong> GitHub Direct</p>
+                    <p><strong>Why:</strong> Full git history, branches, pull requests</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started -->
+        <div class="method-card">
+            <h2>🚀 Getting Started Recommendations</h2>
+            
+            <h3>👤 For Individual Use:</h3>
+            <ol>
+                <li><strong>Start with Prose.io</strong> - Learn the basics, always reliable</li>
+                <li><strong>Try Visual Editor</strong> - Experience live preview editing</li>
+                <li><strong>Use GitHub Direct</strong> - For emergency situations</li>
+                <li><strong>Use Custom Editor</strong> - When you need full HTML control</li>
+            </ol>
+
+            <h3>👥 For Team Use:</h3>
+            <ol>
+                <li><strong>Use GitHub Direct</strong> - Version control and collaboration</li>
+                <li><strong>Train team on Prose.io</strong> - Simple, reliable editing</li>
+                <li><strong>Keep Visual Editor</strong> - For technical team members</li>
+                <li><strong>Maintain GitHub workflow</strong> - Pull requests for review</li>
+            </ol>
+
+            <h3>💡 Pro Tips:</h3>
+            <ul>
+                <li><strong>Bookmark all methods</strong> - Different tools for different situations</li>
+                <li><strong>Test changes locally first</strong> - Use preview features when available</li>
+                <li><strong>Keep GitHub as backup</strong> - It's the most reliable option</li>
+                <li><strong>Use appropriate tool for task</strong> - Don't use advanced tools for simple edits</li>
+            </ul>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <a href="/admin/" class="btn btn-success">🏠 Back to Admin Dashboard</a>
+                <a href="/admin/visual-editor" class="btn">🎨 Try Visual Editor</a>
+                <a href="http://prose.io" target="_blank" class="btn">📝 Try Prose.io</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple accordion for method cards
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling to comparison table link
+            document.querySelector('a[href="#comparison"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('comparison').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+        });
+    </script>
+</body>
+</html>

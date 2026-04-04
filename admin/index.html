@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PIU Portfolio</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: #f5f7fa;
+        }
+        .admin-options {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .option-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-4px);
+        }
+        .option-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .option-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        .option-button.primary {
+            background: #27ae60;
+        }
+        .option-button.primary:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-options">
+        <div style="text-align: right; margin-bottom: 1rem;">
+            <a href="/" class="option-button" style="background: #95a5a6;">🏠 Back to Homepage</a>
+            <a href="/admin/editing-methods-guide.html" class="option-button" style="background: #3498db;">📋 Editing Guide</a>
+        </div>
+        <h1>🚀 Portfolio Admin</h1>
+        <p>Simple, reliable editing methods for your static website:</p>
+        
+        <div class="option-card">
+            <h2>🐙 GitHub Direct</h2>
+            <p>Edit files directly on GitHub.com with built-in editor</p>
+            <p><strong>Features:</strong> Zero setup, web-based, commit messages, branch support, merge requests</p>
+            <div style="margin-top: 1rem;">
+                <a href="https://github.com/krnch/piuwebsite" target="_blank" class="option-button primary">� Open Repository</a>
+                <a href="https://github.com/krnch/piuwebsite/tree/master" target="_blank" class="option-button">� Browse Files</a>
+            </div>
+        </div>
+        
+        <div class="option-card">
+            <h2>📝 Prose.io Editor</h2>
+            <p>Battle-tested web editor (12 years old) with GitHub integration</p>
+            <p><strong>Features:</strong> Simple, reliable, works on mobile, GitHub authentication, direct file editing</p>
+            <div style="margin-top: 1rem;">
+                <a href="http://prose.io/#krnch/piuwebsite" target="_blank" class="option-button primary">📝 Open Prose.io</a>
+                <a href="https://prose.io/about.html" target="_blank" class="option-button">📖 Learn More</a>
+            </div>
+        </div>
+        
+        <div class="option-card">
+            <h2>💻 Local Simple Editor</h2>
+            <p>Edit HTML files offline on your computer</p>
+            <p><strong>Features:</strong> No internet needed, load/edit/download files, works completely offline</p>
+            <div style="margin-top: 1rem;">
+                <a href="/admin/editor-simple.html" class="option-button primary">📝 Open Local Editor</a>
+                <a href="/admin/editor-local.html" class="option-button">🖥️ Alternate Editor</a>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 3rem 0; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3>🎯 Quick Start Recommendations</h3>
+            <p><strong>New to editing?</strong> Start with <strong>GitHub Direct</strong> - zero setup required</p>
+            <p><strong>Regular updates?</strong> Use <strong>Prose.io</strong> - better editing experience</p>
+            <p><strong>Offline editing?</strong> Use <strong>Local Editor</strong> - works without internet</p>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #e8f5e9; border-radius: 6px; border-left: 4px solid #27ae60;">
+                <strong>✅ 100% Static Website</strong><br>
+                <small>Your site is fully static with no backend dependencies. Edit files using any method above, commit to GitHub, and changes deploy automatically via Azure Static Web Apps CI/CD.</small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

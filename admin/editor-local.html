@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Admin - Local Development Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        .admin-header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-selector {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom:2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .page-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .page-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .page-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .editor-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .editor-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-textarea {
+            min-height: 400px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .save-button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+        
+        .save-button:hover {
+            background: #229954;
+        }
+        
+        .status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .file-input {
+            margin-bottom: 1rem;
+        }
+        
+        .file-input input[type="file"] {
+            margin-bottom: 0.5rem;
+        }
+        
+        .download-button {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .download-button:hover {
+            background: #138496;
+            color: white;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <h1>📝 Website Admin - Local Development</h1>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="/admin/" style="color: #ecf0f1; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); border-radius: 4px;">← Back to Admin</a>
+            <a href="/admin/editing-methods-guide" style="color: #ecf0f1; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); border-radius: 4px;">📖 Guide</a>
+            <div style="color: #ecf0f1; font-size: 0.9rem;">🖥️ Local Development Mode</div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="warning-box">
+            <strong>🚨 Local Development Mode</strong><br>
+            This is a local version that works with file uploads/downloads. For full functionality with direct file editing, deploy to Azure Static Web Apps.
+        </div>
+
+        <div class="page-selector">
+            <h2>Edit Website Files</h2>
+            <p>Load HTML files from your computer, edit them, and download the updated versions.</p>
+            <div class="page-buttons">
+                <button class="page-button" onclick="loadSamplePage('index')">🏠 Load Index Template</button>
+                <button class="page-button" onclick="loadSamplePage('about')">👤 Load About Template</button>
+                <button class="page-button" onclick="loadSamplePage('contact')">📧 Load Contact Template</button>
+                <button class="page-button" onclick="showFileLoader()">📁 Load Your HTML File</button>
+            </div>
+        </div>
+
+        <!-- File Loader -->
+        <div id="fileLoader" class="editor-section">
+            <h3>📂 Load HTML File</h3>
+            <div class="file-input">
+                <label class="form-label" for="fileInput">Select HTML file to edit:</label>
+                <input type="file" id="fileInput" accept=".html,.htm" onchange="loadFileContent()" class="form-input">
+                <small>Supports .html and .htm files</small>
+            </div>
+            <div id="fileStatus" class="status-message"></div>
+        </div>
+
+        <!-- Page Editor -->
+        <div id="pageEditor" class="editor-section">
+            <h3 id="editorTitle">Edit HTML File</h3>
+            <div class="form-group">
+                <label class="form-label" for="fileName">File Name</label>
+                <input type="text" id="fileName" class="form-input" placeholder="filename.html">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="pageContent">HTML Content</label>
+                <textarea id="pageContent" class="form-textarea" placeholder="Your HTML content will appear here..."></textarea>
+            </div>
+            
+            <div>
+                <button type="button" class="download-button" onclick="downloadFile()">💾 Download File</button>
+                <button type="button" class="save-button" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+            </div>
+            <div id="saveStatus" class="status-message"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentContent = '';
+        let currentFileName = '';
+
+        // Show file loader
+        function showFileLoader() {
+            hideAllSections();
+            document.getElementById('fileLoader').style.display = 'block';
+        }
+
+        // Load sample page template
+        function loadSamplePage(pageName) {
+            const templates = {
+                'index': `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website - Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; }
+        h1 { color: #333; border-bottom: 2px solid #007acc; padding-bottom: 0.5rem; }
+        .section { margin: 2rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Your Website</h1>
+        </header>
+        
+        <main>
+            <section class="section">
+                <h2>About This Site</h2>
+                <p>This is your homepage. Edit this content to match your needs.</p>
+            </section>
+            
+            <section class="section">
+                <h2>Features</h2>
+                <ul>
+                    <li>Responsive design</li>
+                    <li>Clean layout</li>
+                    <li>Easy to customize</li>
+                </ul>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Your Website. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>`,
+                'about': `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Your Website</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; }
+        h1 { color: #333; border-bottom: 2px solid #007acc; padding-bottom: 0.5rem; }
+        .bio { background: #f8f9fa; padding: 1.5rem; border-radius: 6px; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="index.html">Home</a> | 
+                <a href="about.html">About</a> | 
+                <a href="contact.html">Contact</a>
+            </nav>
+            <h1>About Me</h1>
+        </header>
+        
+        <main>
+            <div class="bio">
+                <h2>Your Name</h2>
+                <p>Write your biography here. Tell visitors about your background, experience, and interests.</p>
+            </div>
+            
+            <section>
+                <h2>Skills</h2>
+                <ul>
+                    <li>Web Development</li>
+                    <li>Design</li>
+                    <li>Your other skills</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>`,
+                'contact': `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Your Website</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; }
+        h1 { color: #333; border-bottom: 2px solid #007acc; padding-bottom: 0.5rem; }
+        .form-group { margin: 1rem 0; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { background: #007acc; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="index.html">Home</a> | 
+                <a href="about.html">About</a> | 
+                <a href="contact.html">Contact</a>
+            </nav>
+            <h1>Contact Me</h1>
+        </header>
+        
+        <main>
+            <form>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>`
+            };
+
+            currentContent = templates[pageName];
+            currentFileName = `${pageName}.html`;
+            
+            document.getElementById('fileName').value = currentFileName;
+            document.getElementById('pageContent').value = currentContent;
+            document.getElementById('editorTitle').textContent = `Edit ${pageName.charAt(0).toUpperCase() + pageName.slice(1)} Page`;
+            
+            hideAllSections();
+            document.getElementById('pageEditor').style.display = 'block';
+            
+            showStatus('saveStatus', `✅ Loaded ${pageName} template! Edit the content and download when ready.`, 'success');
+        }
+
+        // Load file content from user's computer
+        function loadFileContent() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentContent = e.target.result;
+                currentFileName = file.name;
+                
+                document.getElementById('fileName').value = currentFileName;
+                document.getElementById('pageContent').value = currentContent;
+                document.getElementById('editorTitle').textContent = `Edit ${file.name}`;
+                
+                hideAllSections();
+                document.getElementById('pageEditor').style.display = 'block';
+                
+                showStatus('saveStatus', `✅ Loaded ${file.name}! You can now edit the content.`, 'success');
+            };
+            
+            reader.onerror = function() {
+                showStatus('fileStatus', 'Error reading file. Please try again.', 'error');
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // Download edited file
+        function downloadFile() {
+            const content = document.getElementById('pageContent').value;
+            const fileName = document.getElementById('fileName').value || 'edited-page.html';
+            
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showStatus('saveStatus', `✅ Downloaded ${fileName}!`, 'success');
+        }
+
+        // Copy content to clipboard
+        function copyToClipboard() {
+            const content = document.getElementById('pageContent').value;
+            
+            navigator.clipboard.writeText(content).then(function() {
+                showStatus('saveStatus', '✅ Content copied to clipboard!', 'success');
+            }, function() {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = content;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showStatus('saveStatus', '✅ Content copied to clipboard!', 'success');
+            });
+        }
+
+        // Utility functions
+        function hideAllSections() {
+            const sections = document.querySelectorAll('.editor-section');
+            sections.forEach(section => section.style.display = 'none');
+        }
+
+        function showStatus(elementId, message, type) {
+            const statusEl = document.getElementById(elementId);
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Auto-update filename when content changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageContent = document.getElementById('pageContent');
+            pageContent.addEventListener('input', function() {
+                // Auto-save functionality could be added here
+            });
+        });
+    </script>
+</body>
+</html>
