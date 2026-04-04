@@ -11,6 +11,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["azure", "functions", "cms", "netlify-cms"],
-  "author": "Your Name",
+  "author": "Priyanka Chaudhari",
   "license": "MIT"
 }
