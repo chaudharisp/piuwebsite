@@ -1,62 +1,92 @@
 summary: |
-  **Senior Product Manager** with 8+ years of experience driving product strategy and execution at high-growth companies. Expert in data-driven decision making, cross-functional leadership, and user-centered design. Proven track record of launching successful products that scale to millions of users while delivering measurable business impact.
+  **Technical Business Analyst and Data Scientist** with 4+ years of experience in FinTech, eCommerce, and AI Product. Specialized in stakeholder engagement, Agile delivery, requirements documentation (BRD, FRD, RTM), and data-driven process improvement using SQL, Python, and Power BI.
+  
+  At Shoptaki, I translate quantitative trading workflows into technical requirements, build Power BI dashboards that save 12+ hours weekly, and maintain 100% compliance traceability across forward and back-testing cycles. Previously at VGL Group, I elicited requirements from 30+ global stakeholders, delivered 150+ user stories at 98% sprint velocity, and drove 25% faster turnaround across US/UK/Germany markets.
 
 experience:
-  - title: "Senior Product Manager"
-    company: "TechCorp Inc."
-    location: "San Francisco, CA"
-    start_date: "2020"
+  - title: "Technical Business Analyst / Data Scientist"
+    company: "Shoptaki"
+    location: "Remote, United States"
+    start_date: "Jul 2025"
     end_date: "Present"
     responsibilities:
-      - "Led product strategy for core platform serving 2M+ active users"
-      - "Increased user engagement by 40% through data-driven feature optimization"
-      - "Managed cross-functional teams of 15+ engineers, designers, and analysts"
-      - "Developed and executed product roadmap generating $10M+ annual revenue"
-      - "Implemented A/B testing framework improving conversion rates by 25%"
+      - "Analyze trading and market datasets using SQL, Python, and Excel to track KPIs and identify performance trends, resulting in 8-10% increase in forward-testing accuracy"
+      - "Collaborate with developers and backtesting analysts to define technical requirements, ensuring consistent delivery across 2 software release cycles"
+      - "Spearhead requirement gathering and documentation (BRD, FRD, RTM, User Stories) in JIRA and Confluence for 3+ analytics features, saving 4-6 hours weekly"
+      - "Develop Power BI dashboards and KPI reports to monitor trade performance and operational metrics for stakeholder strategy evaluation"
+      - "Govern strategy validation and process traceability for forward and back-testing compliance, maintaining 100% oversight of testing protocols"
   
-  - title: "Product Manager"
-    company: "StartupXYZ"
-    location: "San Francisco, CA"
-    start_date: "2018"
-    end_date: "2020"
+  - title: "Data Analyst Intern"
+    company: "KeeperAI"
+    location: "Remote, New York, NY"
+    start_date: "Jul 2024"
+    end_date: "Sep 2024"
     responsibilities:
-      - "Launched 3 major product features with 95%+ user satisfaction scores"
-      - "Conducted user research and market analysis to identify growth opportunities"
-      - "Collaborated with engineering and design teams to deliver products on time"
-      - "Established product metrics and KPIs to track performance and success"
-      - "Presented product updates and strategy to executive leadership team"
+      - "Extracted user engagement and behavioral data using SQL and Power BI, identifying patterns in personality profiling that improved dashboard insights by 20%"
+      - "Re-engineered end-to-end user workflows in MS Visio, pinpointing onboarding bottlenecks to reduce process inefficiencies by 15%"
+      - "Documented critical business and functional requirements (BRD, FRD, RTM) in Confluence, ensuring alignment with product goals and AI ethics standards"
+      - "Validated ETL pipelines in Databricks, conducted cohort analyses in Excel, and developed Figma prototypes to test AI-driven insights"
 
-  - title: "Associate Product Manager"
-    company: "Digital Solutions Co."
-    location: "Austin, TX"
-    start_date: "2016"
-    end_date: "2018"
+  - title: "Business Analyst"
+    company: "VGL Group"
+    location: "India"
+    start_date: "Jan 2020"
+    end_date: "Sep 2022"
     responsibilities:
-      - "Supported senior PMs in product development and go-to-market strategies"
-      - "Analyzed user behavior data to inform product decisions and improvements"
-      - "Coordinated with marketing team on product launches and campaigns"
-      - "Created detailed product requirements and user stories for development"
-      - "Participated in customer interviews and usability testing sessions"
+      - "Elicited 30+ stakeholder inputs across studio, merchandising, eCommerce, and distribution to define clear requirements, improving organizational alignment by 40%"
+      - "Structured 50+ user stories, BPMN process flows, and functional specs in Confluence/JIRA for TV to web journeys and catalog navigation, cutting project iterations by 25%"
+      - "Validated high-velocity retail workflows via risk-based UAT tied to acceptance criteria, achieving 95% coverage and reducing post-deployment issues by 20%"
+      - "Automated trading workflows and KPI reporting (CVR, AOV, GM%, returns%, SLAs) using SQL and Power BI, increasing operational efficiency by 20%"
+      - "Optimized SQL/T-SQL queries for merchandising/finance dashboards, improving data retrieval efficiency by 30% and halving report generation time"
+
+education:
+  - degree: "Master's Degree in Information Systems"
+    school: "Pace University - Seidenberg School of Computer Science and Information Systems"
+    location: "New York, NY"
+    start_date: "Sep 2023"
+    end_date: "May 2025"
+    gpa: "3.8/4.0"
+  
+  - degree: "Bachelor of Engineering in Computer Science"
+    school: "Savitribai Phule Pune University"
+    location: "India"
+    start_date: "Aug 2014"
+    end_date: "Jun 2019"
+    grade: "First Class with Distinction"
 
 skills:
-  strategy:
-    - "Product Roadmapping test"
-    - "Market Analysis"
-    - "Competitive Intelligence"
-    - "Go-to-Market Strategy"
-    - "Product Vision & Strategy"
-    - "User Story Mapping"
-  analytics:
-    - "SQL & Database Querying"
-    - "Google Analytics & Adobe Analytics"
-    - "A/B Testing & Experimentation"
-    - "Data Visualization (Tableau, PowerBI)"
-    - "Statistical Analysis"
-    - "Conversion Rate Optimization"
-  leadership:
-    - "Cross-functional Team Leadership"
-    - "Stakeholder Management"
+  data_analytics:
+    - "SQL & T-SQL"
+    - "Python (Pandas, NumPy, Scikit-learn)"
+    - "Power BI"
+    - "Tableau"
+    - "Databricks"
+    - "Excel (Advanced Analytics)"
+  business_analysis:
+    - "Requirements Elicitation"
+    - "BRD/FRD/RTM Documentation"
+    - "User Story Development"
+    - "Process Modeling (BPMN)"
+    - "Gap Analysis"
+    - "UAT & Test Planning"
+  agile_collaboration:
+    - "JIRA & Confluence"
     - "Agile/Scrum Methodologies"
-    - "Product Backlog Management"
-    - "Executive Communication"
-    - "Mentoring & Team Development"
+    - "Stakeholder Management"
+    - "Sprint Planning & Retrospectives"
+    - "Change Control & Benefits Tracking"
+    - "Workflow Automation"
+  compliance:
+    - "HIPAA Compliance"
+    - "GDPR Requirements"
+    - "Data Privacy & Security"
+    - "Audit Logging & Traceability"
+
+certifications:
+  - name: "R for Data Science: Analysis and Visualization"
+    issuer: "LinkedIn Learning"
+    date: "Jan 2024"
+
+projects:
+  - name: "Therapy Delivery CoPilot | Accenture Autism Hackathon 2025"
+    description: "Served as Business Analyst on an Accenture-organized initiative to develop an AI-powered behavioral analysis application for autistic individuals. Gathered and documented requirements across clinical and technical stakeholders, translated video dataset observations into structured BRD/FRD documentation, and ensured HIPAA-compliant data handling protocols for all PHI and behavioral data throughout the project lifecycle."
