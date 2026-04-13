@@ -78,8 +78,6 @@
 
   .insight-box { background:var(--pal-green); border-left:4px solid var(--accent-green); padding:10px 14px; border-radius:0 4px 4px 0; font-size:11px; color:#1a1a1a; margin-top:10px; line-height:1.6; }
   .insight-box strong { color:var(--dark-green); }
-
-  .footer { text-align:center; font-size:10px; color:#aaa; padding:10px 24px 20px; }
 </style>
 </head>
 <body>
@@ -290,7 +288,59 @@
   </div>
 </div>
 
-<div class="footer">US Energy Market Performance Analytics &nbsp;|&nbsp; Built with SQL + Power BI &nbsp;|&nbsp; Analyst: Priyanka Chaudhari &nbsp;|&nbsp; Portfolio Project — github.com/priyanka-chaudhari29</div>
+<div style="background:#fff;border-top:3px solid #1E4620;padding:24px;margin-top:0">
+  <div style="max-width:1100px;margin:auto">
+    <h2 style="font-size:15px;font-weight:700;color:#1E4620;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:18px">📊 Dashboard Analysis &amp; Key Insights</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+
+      <div style="background:#FDECEA;border-left:4px solid #C00000;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#C00000;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">🚨 Outage Crisis</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          With <strong>242 outage events — 61% above the 150-event target</strong>, grid reliability is the single largest operational risk. The West region leads with 59 events while also generating the highest revenue ($108M), creating a high-value, high-risk concentration that demands immediate investment in predictive maintenance.
+        </p>
+      </div>
+
+      <div style="background:#FEF3E7;border-left:4px solid #ED7D31;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#ED7D31;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">⚡ Renewable Gap</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Renewable share is stuck at <strong>27.2% across 8 quarters</strong> — range-bound, not trending upward. Hitting the 30% target requires only a ~1.2GWh shift, achievable with targeted Southwest solar investment. Q2 is the weakest quarter (21.7%), confirming a need for diversified renewable mix, not a single source dependency.
+        </p>
+      </div>
+
+      <div style="background:#EDF7E6;border-left:4px solid #70AD47;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#2d6a12;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">✅ Carbon Economics Case</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Coal appears cheap at $45/MWh nominally, but at $50/ton carbon cost (EU ETS proxy) its effective price rises to <strong>~$87/MWh</strong> — nearly 2× the cost of Nuclear ($38). This single insight reframes the entire dispatch optimization model and makes the coal-to-renewable transition an <strong>economic argument, not just regulatory</strong>.
+        </p>
+      </div>
+
+      <div style="background:#EBF3FB;border-left:4px solid #2E75B6;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#1F3864;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">🌍 Revenue Distribution</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Revenue is nearly equal across all 5 regions ($102–$108M), indicating a <strong>well-diversified geographic portfolio</strong>. This is a strength — no single region accounts for more than 21% of total revenue. Natural Gas alone contributes $235M (45% of total), making it the dominant source but also a concentration risk if regulations tighten.
+        </p>
+      </div>
+
+      <div style="background:#EBF3FB;border-left:4px solid #2E75B6;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#1F3864;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">📅 Seasonal Demand Pattern</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Q1 and Q3 are peak demand quarters (3,381 and 3,337 MWh avg) reflecting winter heating and summer cooling loads. Q2 is consistently the lowest demand period. Grid capacity planning should prioritize <strong>Q1 and Q3 resilience</strong>, particularly in the West and Northeast where both demand and outages are highest.
+        </p>
+      </div>
+
+      <div style="background:#EDF7E6;border-left:4px solid #70AD47;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#2d6a12;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">🎯 Strategic Priorities</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Three priorities emerge from this data:<br>
+          <strong>1.</strong> Implement predictive maintenance in West &amp; Northeast to cut outages by 30%+.<br>
+          <strong>2.</strong> Add 1.2GWh Southwest solar to reach the 30% renewable target.<br>
+          <strong>3.</strong> Use carbon-adjusted cost model to build a board-level case for accelerated coal retirement.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
 Chart.defaults.font.family = "'Segoe UI', Calibri, sans-serif";

@@ -83,9 +83,6 @@
   /* INSIGHT BOX */
   .insight-box { background: #EBF3FB; border-left: 4px solid var(--med-blue); padding: 10px 14px; border-radius: 0 4px 4px 0; font-size: 11px; color: #1a1a1a; margin-top: 10px; line-height: 1.5; }
   .insight-box strong { color: var(--dark-blue); }
-
-  /* FOOTER */
-  .footer { text-align: center; font-size: 10px; color: #aaa; padding: 10px 24px 20px; }
 </style>
 </head>
 <body>
@@ -248,7 +245,60 @@
   </div>
 </div>
 
-<div class="footer">FinTech Fraud Detection & Risk Analytics &nbsp;|&nbsp; Built with SQL + Power BI &nbsp;|&nbsp; Analyst: Priyanka Chaudhari &nbsp;|&nbsp; Portfolio Project — github.com/priyanka-chaudhari29</div>
+<div class="insights-panel" style="background:#fff;border-top:3px solid #1F3864;padding:24px;margin-top:0">
+  <div style="max-width:1100px;margin:auto">
+    <h2 style="font-size:15px;font-weight:700;color:#1F3864;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:18px">📊 Dashboard Analysis &amp; Key Insights</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+
+      <div style="background:#FDECEA;border-left:4px solid #C00000;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#C00000;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">🚨 Critical Risk Finding</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          <strong>Crypto and Suspicious Vendors</strong> account for just 16% of transaction volume but drive <strong>62% of total fraud exposure ($828K of $1.63M)</strong>. These two categories alone have a fraud rate above 56% — nearly 28× the industry benchmark. This is not a broad systemic issue; it is highly concentrated risk.
+        </p>
+      </div>
+
+      <div style="background:#FEF3E7;border-left:4px solid #ED7D31;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#ED7D31;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">⏰ Time-Based Attack Pattern</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Fraud peaks sharply between <strong>1 AM – 4 AM</strong> with a 36–40% fraud rate — 3× the daytime average. Combined with transaction amounts over $500, this window accounts for a disproportionate share of exposure. A time-based rule alone is estimated to <strong>reduce exposure by 35%</strong> with minimal false positives.
+        </p>
+      </div>
+
+      <div style="background:#EDF7E6;border-left:4px solid #70AD47;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#3a7a1f;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">✅ Recommended Action Plan</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          Three targeted rules address <strong>~88% of total fraud exposure</strong>:<br>
+          <strong>Rule 1:</strong> Flag Crypto/Suspicious + amount &gt;$500 between 1–4 AM.<br>
+          <strong>Rule 2:</strong> Require 2FA on Crypto/Suspicious categories + amount &gt;$500.<br>
+          <strong>Rule 3:</strong> Step-up auth for ATM &gt;$800.<br>
+          Combined estimated impact: <strong>40–50% exposure reduction</strong>.
+        </p>
+      </div>
+
+      <div style="background:#EBF3FB;border-left:4px solid #2E75B6;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#1F3864;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">📈 Monthly Trend</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          The fraud rate has been <strong>consistently elevated all year</strong> (14.6%–20%), showing no seasonal decline. This rules out a one-off spike and confirms a structural vulnerability. The Jan and Nov dips (14.6%, 15.9%) may reflect temporary controls that didn't scale — worth investigating as a starting model.
+        </p>
+      </div>
+
+      <div style="background:#EBF3FB;border-left:4px solid #2E75B6;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#1F3864;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">💰 Amount Risk Profile</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          High-value transactions (&gt;$1K) have a <strong>22.7% fraud rate</strong> — 6× higher than transactions under $200. This amount-based signal is strong enough to act as a standalone trigger for step-up authentication, especially when combined with category or time-of-day signals.
+        </p>
+      </div>
+
+      <div style="background:#EDF7E6;border-left:4px solid #70AD47;padding:14px 16px;border-radius:0 4px 4px 0">
+        <div style="font-size:11px;font-weight:700;color:#3a7a1f;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">🎯 Business Impact</div>
+        <p style="font-size:12px;color:#333;line-height:1.6">
+          The current fraud rate of <strong>18.2% is 9× the industry benchmark of &lt;2%</strong>. Bringing it to benchmark represents a potential <strong>$1.4M reduction in annual fraud losses</strong>. The concentration of risk in 3 categories means controls can be surgical — avoiding broad friction that would impact the 82% of legitimate transactions.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
 const COLORS = {
