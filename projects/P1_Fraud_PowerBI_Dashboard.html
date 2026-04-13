@@ -135,24 +135,24 @@
   <div class="kpi-row">
     <div class="kpi-card">
       <div class="kpi-title">Total Transactions</div>
-      <div class="kpi-value">5,000</div>
+      <div class="kpi-value" id="kpiTotal">5,000</div>
       <div class="kpi-sub">Jan–Dec 2024</div>
     </div>
     <div class="kpi-card red">
       <div class="kpi-title">Fraud Count</div>
-      <div class="kpi-value red">911</div>
+      <div class="kpi-value red" id="kpiFraud">911</div>
       <div class="kpi-sub">Flagged transactions</div>
       <span class="kpi-badge red">▲ ELEVATED</span>
     </div>
     <div class="kpi-card red">
       <div class="kpi-title">Fraud Rate %</div>
-      <div class="kpi-value red">18.2%</div>
+      <div class="kpi-value red" id="kpiRate">18.2%</div>
       <div class="kpi-sub">Benchmark: &lt; 2%</div>
       <span class="kpi-badge red">9× INDUSTRY AVG</span>
     </div>
     <div class="kpi-card orange">
       <div class="kpi-title">Total Fraud Exposure</div>
-      <div class="kpi-value orange">$1.63M</div>
+      <div class="kpi-value orange" id="kpiExp">$1.63M</div>
       <div class="kpi-sub">Of $7.50M total volume</div>
       <span class="kpi-badge orange">21.7% of volume</span>
     </div>
@@ -186,7 +186,7 @@
     </div>
     <div class="card">
       <div class="card-title">Merchant Risk Scorecard <span>v_merchant_risk_scorecard view</span></div>
-      <table class="data-table">
+      <table class="data-table" id="scorecardTable">
         <thead><tr><th>Category</th><th>Total Txns</th><th>Fraud Txns</th><th>Fraud Rate</th><th>Exposure</th><th>Risk</th></tr></thead>
         <tbody>
           <tr><td>Crypto</td><td>416</td><td>239</td><td>57.5%</td><td>$425K</td><td><span class="risk-pill risk-high">HIGH</span></td></tr>
@@ -257,11 +257,23 @@ const COLORS = {
   lightBlue:'#D6E4F0', gray:'#F2F2F2'
 };
 
+const charts = {};
+
+const DATA = {
+  cats: ['Crypto','Suspicious','ATM','Subscription','Fuel','Travel','eCommerce','Electronics','Ride-share','Food','P2P','Retail'],
+  fraudRates: [57.5, 56.9, 30.9, 10.4, 9.1, 8.7, 8.6, 8.6, 8.1, 7.9, 7.4, 6.6],
+  totalTxns:  [416, 413, 392, 425, 428, 393, 441, 350, 370, 380, 400, 412],
+  fraudTxns:  [239, 235, 121, 44, 39, 34, 38, 30, 30, 30, 30, 27],
+  expCats:    ['Crypto','Suspicious','ATM','Subscription','Fuel','Travel','eCommerce','Retail'],
+  expValues:  [425, 403, 230, 79, 77, 58, 70, 57],
+  riskTier:   ['HIGH','HIGH','MED','LOW','LOW','LOW','LOW','LOW','LOW','LOW','LOW','LOW'],
+};
+
 Chart.defaults.font.family = "'Segoe UI', Calibri, sans-serif";
 Chart.defaults.font.size = 11;
 
 // Page 1 - Category bar
-new Chart(document.getElementById('catChart'), {
+charts.catChart = new Chart(document.getElementById('catChart'), {
   type: 'bar',
   data: {
     labels: ['Crypto','Suspicious','ATM','Subscription','Fuel','Travel','eCommerce','Electronics','Ride-share','Food','P2P','Retail'],
@@ -316,7 +328,7 @@ new Chart(document.getElementById('monthChart'), {
 });
 
 // Page 2 - Exposure horizontal bar
-new Chart(document.getElementById('exposureChart'), {
+charts.exposureChart = new Chart(document.getElementById('exposureChart'), {
   type: 'bar',
   data: {
     labels: ['Crypto','Suspicious','ATM','Subscription','Fuel','Travel','eCommerce','Retail'],
@@ -394,23 +406,63 @@ function showPage(i) {
   document.querySelectorAll('.tab').forEach((t,idx) => t.classList.toggle('active', idx===i));
 }
 
-// FILTER (visual reset — in real Power BI these cross-filter)
+// FILTER — live cross-filtering
 function applyFilters() {
-  const cat = document.getElementById('fCat').value;
-  const status = document.getElementById('fStatus').value;
+  const cat  = document.getElementById('fCat').value;
   const risk = document.getElementById('fRisk').value;
-  // Visual feedback
-  document.querySelectorAll('.kpi-sub').forEach(el => {
-    if (cat !== 'All' || status !== 'All' || risk !== 'All') {
-      el.style.color = '#2E75B6';
-    } else {
-      el.style.color = '';
-    }
+  const riskMap = {'HIGH RISK':'HIGH','MEDIUM RISK':'MED','LOW RISK':'LOW'};
+
+  // 1. Filter main fraud-rate bar chart
+  let ci = DATA.cats.map((_,i) => i);
+  if (cat  !== 'All') ci = ci.filter(i => DATA.cats[i] === cat);
+  if (risk !== 'All') ci = ci.filter(i => DATA.riskTier[i] === riskMap[risk]);
+
+  charts.catChart.data.labels = ci.map(i => DATA.cats[i]);
+  charts.catChart.data.datasets[0].data = ci.map(i => DATA.fraudRates[i]);
+  charts.catChart.data.datasets[0].backgroundColor = ci.map(i => {
+    const v = DATA.fraudRates[i]; return v > 40 ? '#C00000' : v > 20 ? '#ED7D31' : '#70AD47';
   });
+  charts.catChart.update();
+
+  // 2. Filter exposure bar chart
+  let ei = DATA.expCats.map((_,i) => i);
+  if (cat  !== 'All') ei = ei.filter(i => DATA.expCats[i] === cat);
+  if (risk !== 'All') ei = ei.filter(i => {
+    const mi = DATA.cats.indexOf(DATA.expCats[i]);
+    return mi >= 0 && DATA.riskTier[mi] === riskMap[risk];
+  });
+  charts.exposureChart.data.labels = ei.map(i => DATA.expCats[i]);
+  charts.exposureChart.data.datasets[0].data = ei.map(i => DATA.expValues[i]);
+  charts.exposureChart.data.datasets[0].backgroundColor = ei.map(i => {
+    const mi = DATA.cats.indexOf(DATA.expCats[i]);
+    const t = mi >= 0 ? DATA.riskTier[mi] : 'LOW';
+    return t === 'HIGH' ? '#C00000' : t === 'MED' ? '#ED7D31' : '#70AD47';
+  });
+  charts.exposureChart.update();
+
+  // 3. Filter scorecard table rows
+  document.querySelectorAll('#scorecardTable tbody tr').forEach(row => {
+    const rc = row.cells[0].textContent.trim();
+    const rp = row.querySelector('.risk-pill');
+    const rr = rp ? rp.textContent.trim() : '';
+    const showCat  = cat  === 'All' || rc === cat;
+    const showRisk = risk === 'All' || rr === riskMap[risk];
+    row.style.display = showCat && showRisk ? '' : 'none';
+  });
+
+  // 4. Update KPI cards
+  const totTxns  = ci.reduce((s,i) => s + DATA.totalTxns[i], 0);
+  const totFraud = ci.reduce((s,i) => s + DATA.fraudTxns[i], 0);
+  const rate     = totTxns > 0 ? ((totFraud / totTxns) * 100).toFixed(1) : '0.0';
+  const totExp   = ei.reduce((s,i) => s + DATA.expValues[i], 0);
+  document.getElementById('kpiTotal').textContent = totTxns.toLocaleString();
+  document.getElementById('kpiFraud').textContent = totFraud.toLocaleString();
+  document.getElementById('kpiRate').textContent  = rate + '%';
+  document.getElementById('kpiExp').textContent   = '$' + (totExp / 1000).toFixed(2) + 'M';
 }
 
 function clearFilters() {
-  ['fCat','fStatus','fRisk'].forEach(id => document.getElementById(id).value='All');
+  ['fCat','fStatus','fRisk'].forEach(id => document.getElementById(id).value = 'All');
   applyFilters();
 }
 </script>

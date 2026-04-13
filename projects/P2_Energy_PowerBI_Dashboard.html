@@ -185,7 +185,7 @@
 
   <div class="card">
     <div class="card-title">Source Performance Scorecard <span>Revenue, price, CO₂, efficiency rating</span></div>
-    <table class="data-table">
+    <table class="data-table" id="sourceTable">
       <thead><tr><th>Source</th><th>Type</th><th>Revenue ($M)</th><th>Avg Price/MWh</th><th>CO₂ Tons</th><th>Utilization</th><th>Efficiency</th></tr></thead>
       <tbody>
         <tr><td>Natural Gas</td><td>Non-Renewable</td><td>$234.8</td><td>$54.10</td><td>1,765</td><td><div class="progress-bar"><div class="progress-fill" style="width:72%;background:#70AD47"></div></div></td><td><span class="eff-pill eff-h">HIGH</span></td></tr>
@@ -298,8 +298,26 @@ Chart.defaults.font.size = 11;
 
 const G = { dg:'#1E4620', mg:'#375623', ag:'#70AD47', red:'#C00000', orange:'#ED7D31', blue:'#2E75B6', yellow:'#FFC000' };
 
+const charts = {};
+
+const RDATA = {
+  regions:   ['West','Midwest','Northeast','Southeast','Southwest'],
+  revenue:   [107.96, 104.67, 104.36, 103.26, 102.01],
+  revColors: [G.dg, G.mg, G.ag, '#5a9e35', '#3d7a25'],
+  outRegions:['West','Northeast','Southeast','Midwest','Southwest'],
+  outValues: [59, 52, 46, 44, 41],
+  outColors: ['#C00000','#ED7D31','#ED7D31','#2E75B6','#2E75B6'],
+};
+
+const SDATA = {
+  sources: ['Natural Gas','Coal','Nuclear','Solar','Wind','Hydro'],
+  types:   ['Non-Renewable','Non-Renewable','Non-Renewable','Renewable','Renewable','Renewable'],
+  revenue: [234.84, 110.56, 85.63, 46.09, 31.09, 14.06],
+  colors:  [G.orange, G.red, G.blue, G.yellow, G.ag, '#2EAAB6'],
+};
+
 // P1 - Region revenue
-new Chart(document.getElementById('regionChart'), {
+charts.regionChart = new Chart(document.getElementById('regionChart'), {
   type:'bar',
   data:{
     labels:['West','Midwest','Northeast','Southeast','Southwest'],
@@ -322,7 +340,7 @@ new Chart(document.getElementById('donutChart'), {
 });
 
 // P2 - Source revenue
-new Chart(document.getElementById('srcRevChart'), {
+charts.srcRevChart = new Chart(document.getElementById('srcRevChart'), {
   type:'bar',
   data:{
     labels:['Natural Gas','Coal','Nuclear','Solar','Wind','Hydro'],
@@ -403,7 +421,7 @@ new Chart(document.getElementById('seasonChart'), {
 });
 
 // P4 - Outage by region
-new Chart(document.getElementById('outRegChart'), {
+charts.outRegChart = new Chart(document.getElementById('outRegChart'), {
   type:'bar',
   data:{
     labels:['West','Northeast','Southeast','Midwest','Southwest'],
@@ -417,7 +435,7 @@ new Chart(document.getElementById('outRegChart'), {
 });
 
 // P4 - Revenue vs Outages grouped
-new Chart(document.getElementById('revOutChart'), {
+charts.revOutChart = new Chart(document.getElementById('revOutChart'), {
   type:'bar',
   data:{
     labels:['West','Midwest','Northeast','Southeast','Southwest'],
@@ -443,14 +461,54 @@ function showPage(i) {
   document.querySelectorAll('.page').forEach((p,idx) => p.classList.toggle('active',idx===i));
   document.querySelectorAll('.tab').forEach((t,idx) => t.classList.toggle('active',idx===i));
 }
+
+// FILTER — live cross-filtering
 function applyFilters() {
-  document.querySelectorAll('.kpi-sub').forEach(el => {
-    const anyActive = ['fRegion','fYear','fType'].some(id => document.getElementById(id).value !== 'All');
-    el.style.color = anyActive ? '#375623' : '';
+  const region = document.getElementById('fRegion').value;
+  const type   = document.getElementById('fType').value;
+
+  // 1. Region chart
+  let ri = RDATA.regions.map((_,i) => i);
+  if (region !== 'All') ri = ri.filter(i => RDATA.regions[i] === region);
+  charts.regionChart.data.labels = ri.map(i => RDATA.regions[i]);
+  charts.regionChart.data.datasets[0].data = ri.map(i => RDATA.revenue[i]);
+  charts.regionChart.data.datasets[0].backgroundColor = ri.map(i => RDATA.revColors[i]);
+  charts.regionChart.update();
+
+  // 2. Outage region chart
+  let oi = RDATA.outRegions.map((_,i) => i);
+  if (region !== 'All') oi = oi.filter(i => RDATA.outRegions[i] === region);
+  charts.outRegChart.data.labels = oi.map(i => RDATA.outRegions[i]);
+  charts.outRegChart.data.datasets[0].data = oi.map(i => RDATA.outValues[i]);
+  charts.outRegChart.data.datasets[0].backgroundColor = oi.map(i => RDATA.outColors[i]);
+  charts.outRegChart.update();
+
+  // 3. Revenue vs Outages grouped
+  charts.revOutChart.data.labels = oi.map(i => RDATA.outRegions[i]);
+  charts.revOutChart.data.datasets[0].data = oi.map(i => {
+    const idx = RDATA.regions.indexOf(RDATA.outRegions[i]);
+    return idx >= 0 ? RDATA.revenue[idx] : 0;
+  });
+  charts.revOutChart.data.datasets[1].data = oi.map(i => RDATA.outValues[i]);
+  charts.revOutChart.update();
+
+  // 4. Source revenue chart
+  let si = SDATA.sources.map((_,i) => i);
+  if (type !== 'All') si = si.filter(i => SDATA.types[i] === type);
+  charts.srcRevChart.data.labels = si.map(i => SDATA.sources[i]);
+  charts.srcRevChart.data.datasets[0].data = si.map(i => SDATA.revenue[i]);
+  charts.srcRevChart.data.datasets[0].backgroundColor = si.map(i => SDATA.colors[i]);
+  charts.srcRevChart.update();
+
+  // 5. Filter source scorecard table
+  document.querySelectorAll('#sourceTable tbody tr').forEach(row => {
+    const t = row.cells[1] ? row.cells[1].textContent.trim() : '';
+    row.style.display = type === 'All' || t === type ? '' : 'none';
   });
 }
+
 function clearFilters() {
-  ['fRegion','fYear','fType'].forEach(id => document.getElementById(id).value='All');
+  ['fRegion','fYear','fType'].forEach(id => document.getElementById(id).value = 'All');
   applyFilters();
 }
 </script>
