@@ -107,6 +107,10 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/projects/*",
+      "allowedRoles": ["anonymous"]
+    },
+    {
       "route": "/*",
       "serve": "/index.html",
       "statusCode": 200
