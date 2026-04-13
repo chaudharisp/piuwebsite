@@ -315,24 +315,9 @@ body {
 .skill-tag {
     background-color: var(--primary-color);
     color: white;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
     border-radius: var(--border-radius);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-}
-
-.skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-}
-
-.skill-tag {
-    background-color: #e8f0fe;
-    color: #1a3a6b;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 11px;
+    font-size: var(--font-size-base);
     font-weight: 500;
 }
 
