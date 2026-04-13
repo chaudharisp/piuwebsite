@@ -306,6 +306,30 @@ body {
     color: var(--text-primary);
 }
 
+.skill-categories {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.skill-category {
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.skill-category:last-child {
+    border-bottom: none;
+}
+
+.skill-category-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--primary-color);
+    margin-bottom: 6px;
+}
+
 .skill-tags {
     display: flex;
     flex-wrap: wrap;
