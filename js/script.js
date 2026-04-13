@@ -150,8 +150,8 @@ function initializeHomepage(homepage, settings) {
         heroSubtitle.textContent = homepage.hero_subtitle;
     }
     
-    if (heroDescription && homepage.hero_subtitle) {
-        heroDescription.textContent = homepage.hero_subtitle;
+    if (heroDescription && homepage.hero_description) {
+        heroDescription.textContent = homepage.hero_description;
     }
     
     // Update about section
