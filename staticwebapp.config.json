@@ -74,6 +74,15 @@
       }
     },
     {
+      "route": "/projects/*.docx",
+      "allowedRoles": ["anonymous"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Content-Disposition": "inline"
+      }
+    },
+    {
       "route": "/api/auth",
       "allowedRoles": ["anonymous"]
     },
@@ -105,7 +114,7 @@
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/admin/*", "/api/*", "/_data/*", "/admin/*.html", "*.{css,js,jpg,png,gif,ico,svg,yml,yaml,html}"]
+    "exclude": ["/admin/*", "/api/*", "/_data/*", "/admin/*.html", "/projects/*", "*.{css,js,jpg,png,gif,ico,svg,yml,yaml,html,docx,pdf}"]
   },
   "responseOverrides": {
     "401": {
@@ -123,7 +132,9 @@
     ".js": "application/javascript",
     ".html": "text/html",
     ".yml": "text/yaml",
-    ".yaml": "text/yaml"
+    ".yaml": "text/yaml",
+    ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ".pdf": "application/pdf"
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
