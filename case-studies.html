@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies - Priyanka Chaudhari</title>
+    <meta name="description" content="Business Analysis case studies by Priyanka Chaudhari — FinTech Fraud Detection and Energy Analytics Platform">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .case-studies-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a3a5c 100%);
+            color: white;
+            padding: var(--spacing-3xl) 0 var(--spacing-2xl);
+            text-align: center;
+        }
+        .case-studies-header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: var(--spacing-md); }
+        .case-studies-header p  { font-size: var(--font-size-lg); opacity: 0.85; max-width: 600px; margin: 0 auto; }
+
+        .case-studies-grid {
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: var(--spacing-3xl);
+            border: 1px solid #eee;
+        }
+
+        .case-card-header {
+            padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-lg);
+        }
+
+        .case-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .case-icon.blue  { background: #EBF3FB; color: #1F3864; }
+        .case-icon.green { background: #EDF7E6; color: #1E4620; }
+
+        .case-card-header-text h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+        .case-card-header-text p  { font-size: var(--font-size-base); color: var(--text-secondary); line-height: 1.6; }
+
+        .case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .case-tag {
+            background: #f3f4f6;
+            color: #555;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .case-body {
+            padding: var(--spacing-xl);
+        }
+
+        .case-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+        .case-section-title:first-child { margin-top: 0; }
+
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .deliverable-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1.5px solid #dde3ea;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            background: #fafbfc;
+        }
+        .deliverable-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: #f0f6ff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .deliverable-btn i { font-size: 14px; opacity: 0.7; }
+
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .dashboard-btn:hover {
+            background: #1a3a5c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .outcome-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: var(--spacing-lg);
+        }
+        .outcome-chip {
+            background: #f0f6ff;
+            border: 1px solid #c5d8f5;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+        .outcome-chip strong { color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">Priyanka Chaudhari</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="resume.html" class="nav-link">Resume</a>
+                <a href="case-studies.html" class="nav-link active">Case Studies</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="case-studies-header">
+        <div class="container">
+            <h1>Case Studies</h1>
+            <p>End-to-end Business Analysis projects — from requirements to dashboards. Each case study includes full documentation deliverables and an interactive Power BI dashboard.</p>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="case-studies-grid">
+        <div class="container">
+
+            <!-- Case Study 1: FinTech Fraud Detection -->
+            <div class="case-card">
+                <div class="case-card-header">
+                    <div class="case-icon blue"><i class="fas fa-shield-alt"></i></div>
+                    <div class="case-card-header-text">
+                        <h2>FinTech Fraud Detection & Risk Analytics</h2>
+                        <p>End-to-end BA delivery for a real-time fraud detection system — translating complex FinTech compliance requirements into actionable technical specifications, traceability artefacts, and a Power BI risk dashboard.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">SQL</span>
+                            <span class="case-tag">Power BI</span>
+                            <span class="case-tag">BRD / FRD</span>
+                            <span class="case-tag">RTM</span>
+                            <span class="case-tag">FinTech</span>
+                            <span class="case-tag">UAT</span>
+                            <span class="case-tag">Agile</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <div class="case-section-title">Key Outcomes</div>
+                    <div class="outcome-row">
+                        <div class="outcome-chip"><strong>18.2%</strong> fraud rate identified — 9× industry avg</div>
+                        <div class="outcome-chip"><strong>$1.63M</strong> total fraud exposure quantified</div>
+                        <div class="outcome-chip"><strong>3 rules</strong> addressing 88% of exposure</div>
+                        <div class="outcome-chip"><strong>40–50%</strong> estimated exposure reduction</div>
+                    </div>
+
+                    <div class="case-section-title">Documentation Deliverables</div>
+                    <div class="deliverables-grid">
+                        <a href="projects/P1_BRD_FinTech_Fraud.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-file-alt"></i> Business Requirements
+                        </a>
+                        <a href="projects/P1_FRD_FinTech_Fraud.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-cogs"></i> Functional Requirements
+                        </a>
+                        <a href="projects/P1_RTM_FinTech_Fraud.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-table"></i> Traceability Matrix
+                        </a>
+                        <a href="projects/P1_UserStories_FinTech_Fraud.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-users"></i> User Stories
+                        </a>
+                    </div>
+
+                    <div class="case-section-title">Interactive Dashboard</div>
+                    <a href="projects/P1_Fraud_PowerBI_Dashboard.html" class="dashboard-btn" target="_blank">
+                        <i class="fas fa-chart-bar"></i> View Power BI Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Case Study 2: Energy Analytics -->
+            <div class="case-card">
+                <div class="case-card-header">
+                    <div class="case-icon green"><i class="fas fa-bolt"></i></div>
+                    <div class="case-card-header-text">
+                        <h2>Energy Market Performance Analytics</h2>
+                        <p>Full BA documentation suite for a US energy data analytics platform — covering market performance requirements, renewable transition analysis, outage risk modelling, and an interactive Power BI dashboard.</p>
+                        <div class="case-tags">
+                            <span class="case-tag">SQL</span>
+                            <span class="case-tag">Power BI</span>
+                            <span class="case-tag">BRD / FRD</span>
+                            <span class="case-tag">RTM</span>
+                            <span class="case-tag">Energy</span>
+                            <span class="case-tag">ESG</span>
+                            <span class="case-tag">Data Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-body">
+                    <div class="case-section-title">Key Outcomes</div>
+                    <div class="outcome-row">
+                        <div class="outcome-chip"><strong>$522M</strong> portfolio revenue analysed</div>
+                        <div class="outcome-chip"><strong>27.2%</strong> renewable share vs 30% target</div>
+                        <div class="outcome-chip"><strong>242</strong> outage events — 61% above threshold</div>
+                        <div class="outcome-chip"><strong>Coal ~$87/MWh</strong> effective cost (carbon-adjusted)</div>
+                    </div>
+
+                    <div class="case-section-title">Documentation Deliverables</div>
+                    <div class="deliverables-grid">
+                        <a href="projects/P2_BRD_Energy_Analytics.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-file-alt"></i> Business Requirements
+                        </a>
+                        <a href="projects/P2_FRD_Energy_Analytics.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-cogs"></i> Functional Requirements
+                        </a>
+                        <a href="projects/P2_RTM_Energy_Analytics.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-table"></i> Traceability Matrix
+                        </a>
+                        <a href="projects/P2_UserStories_Energy_Analytics.html" class="deliverable-btn" target="_blank">
+                            <i class="fas fa-users"></i> User Stories
+                        </a>
+                    </div>
+
+                    <div class="case-section-title">Interactive Dashboard</div>
+                    <a href="projects/P2_Energy_PowerBI_Dashboard.html" class="dashboard-btn" target="_blank">
+                        <i class="fas fa-chart-bar"></i> View Power BI Dashboard
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
