@@ -657,107 +657,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    // Track PRD link clicks
-    function trackPRDClicks() {
-        const prdLinks = document.querySelectorAll('.prd-link');
-        prdLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Track the click
-                console.log('PRD link clicked:', this.closest('.work-content').querySelector('h3').textContent);
-                
-                // Show modal or redirect to PRD
-                showPRDModal(this);
-            });
-        });
-    }
-    
-    function showPRDModal(linkElement) {
-        const projectTitle = linkElement.closest('.work-content').querySelector('h3').textContent;
-        
-        // Create modal
-        const modal = document.createElement('div');
-        modal.className = 'prd-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Product Requirements Document</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <h4>${projectTitle}</h4>
-                    <p>This PRD contains detailed product specifications, user stories, acceptance criteria, and success metrics.</p>
-                    <div class="prd-actions">
-                        <a href="#" class="btn btn-primary" onclick="downloadPRD('${projectTitle}')">
-                            <i class="fas fa-download"></i> Download PRD
-                        </a>
-                        <a href="#" class="btn btn-secondary" onclick="viewPRDOnline('${projectTitle}')">
-                            <i class="fas fa-external-link-alt"></i> View Online
-                        </a>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Close modal functionality
-        modal.querySelector('.modal-close').addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                document.body.removeChild(modal);
-            }
-        });
-    }
-    
     // Initialize analytics when page loads
     if (document.getElementById('visitor-count')) {
         initializeAnalytics();
     }
-    
-    // Initialize PRD tracking
-    trackPRDClicks();
-
-    // Global functions for PRD modal actions
-    window.downloadPRD = function(projectTitle) {
-        // Simulate PRD download (replace with actual file paths)
-        console.log('Downloading PRD for:', projectTitle);
-        
-        // Create a temporary download link
-        const link = document.createElement('a');
-        link.href = `#`; // Replace with actual PRD file URLs
-        link.download = `${projectTitle.replace(/\s+/g, '-').toLowerCase()}-prd.pdf`;
-        
-        // Show download notification
-        showNotification(`PRD for "${projectTitle}" download started`, 'success');
-        
-        // Close modal
-        const modal = document.querySelector('.prd-modal');
-        if (modal) {
-            document.body.removeChild(modal);
-        }
-    };
-    
-    window.viewPRDOnline = function(projectTitle) {
-        // Simulate online PRD viewing (replace with actual URLs)
-        console.log('Viewing PRD online for:', projectTitle);
-        
-        // Open in new tab (replace with actual PRD URLs)
-        window.open(`#prd-${projectTitle.replace(/\s+/g, '-').toLowerCase()}`, '_blank');
-        
-        // Show notification
-        showNotification(`Opening PRD for "${projectTitle}" in new tab`, 'info');
-        
-        // Close modal
-        const modal = document.querySelector('.prd-modal');
-        if (modal) {
-            document.body.removeChild(modal);
-        }
-    };
     
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
