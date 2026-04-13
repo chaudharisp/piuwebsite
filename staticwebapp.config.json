@@ -137,7 +137,8 @@
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "SAMEORIGIN"
+    "X-Frame-Options": "SAMEORIGIN",
+    "Cache-Control": "no-cache, must-revalidate"
   },
   "auth": {
     "rolesSource": "/api/roles",
