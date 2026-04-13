@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinTech Fraud Detection & Risk Analytics — Power BI Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --dark-blue: #1F3864; --med-blue: #2E75B6; --light-blue: #D6E4F0; --pal-blue: #EBF3FB;
+    --red: #C00000; --orange: #ED7D31; --green: #70AD47; --yellow: #FFC000;
+    --gray: #F2F2F2; --dark-gray: #595959; --white: #ffffff; --border: #CCCCCC;
+    --bg: #F0F4F8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Calibri, sans-serif; }
+  body { background: var(--bg); color: #222; min-height: 100vh; }
+
+  /* HEADER */
+  .header { background: var(--dark-blue); color: white; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 17px; font-weight: 600; letter-spacing: 0.3px; }
+  .header .meta { font-size: 11px; opacity: 0.7; margin-top: 2px; }
+  .header-right { font-size: 11px; opacity: 0.7; text-align: right; }
+
+  /* TABS */
+  .tabs { background: #162d54; display: flex; gap: 2px; padding: 0 24px; }
+  .tab { padding: 10px 20px; font-size: 12px; color: rgba(255,255,255,0.6); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tab.active { color: white; border-bottom-color: var(--yellow); font-weight: 600; }
+  .tab:hover:not(.active) { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); }
+
+  /* FILTER BAR */
+  .filter-bar { background: white; border-bottom: 1px solid var(--border); padding: 8px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .filter-bar label { font-size: 11px; color: var(--dark-gray); font-weight: 600; }
+  .filter-bar select { font-size: 11px; border: 1px solid var(--border); border-radius: 3px; padding: 4px 8px; background: white; color: #333; cursor: pointer; min-width: 130px; }
+  .filter-bar select:focus { outline: none; border-color: var(--med-blue); }
+  .filter-label { font-size: 11px; color: var(--dark-gray); font-weight: 700; margin-right: 4px; }
+  .clear-btn { margin-left: auto; font-size: 11px; color: var(--med-blue); cursor: pointer; text-decoration: underline; }
+
+  /* CANVAS */
+  .page { display: none; padding: 18px 24px; }
+  .page.active { display: block; }
+
+  /* KPI CARDS */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .kpi-card { background: white; border-radius: 4px; padding: 14px 16px; border-left: 4px solid var(--med-blue); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .kpi-card.red { border-left-color: var(--red); }
+  .kpi-card.orange { border-left-color: var(--orange); }
+  .kpi-card.green { border-left-color: var(--green); }
+  .kpi-title { font-size: 10px; color: var(--dark-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.orange { color: var(--orange); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-sub { font-size: 10px; color: var(--dark-gray); margin-top: 4px; }
+  .kpi-badge { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 2px; font-weight: 700; margin-top: 4px; }
+  .kpi-badge.red { background: #FDECEA; color: var(--red); }
+  .kpi-badge.orange { background: #FEF3E7; color: var(--orange); }
+  .kpi-badge.green { background: #EDF7E6; color: #3a7a1f; }
+
+  /* GRID LAYOUTS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 14px; margin-bottom: 14px; }
+  .span-2 { grid-column: span 2; }
+
+  /* CHART CARDS */
+  .card { background: white; border-radius: 4px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card-title { font-size: 11px; font-weight: 700; color: var(--dark-blue); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .card-title span { font-weight: 400; color: var(--dark-gray); font-size: 10px; text-transform: none; }
+  .chart-wrap { position: relative; }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .data-table th { background: var(--dark-blue); color: white; padding: 7px 10px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+  .data-table td { padding: 6px 10px; border-bottom: 1px solid #eee; }
+  .data-table tr:nth-child(even) td { background: var(--gray); }
+  .data-table tr:hover td { background: var(--pal-blue); }
+  .risk-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 700; }
+  .risk-high { background: var(--red); color: white; }
+  .risk-med { background: var(--orange); color: white; }
+  .risk-low { background: var(--green); color: white; }
+
+  /* INSIGHT BOX */
+  .insight-box { background: #EBF3FB; border-left: 4px solid var(--med-blue); padding: 10px 14px; border-radius: 0 4px 4px 0; font-size: 11px; color: #1a1a1a; margin-top: 10px; line-height: 1.5; }
+  .insight-box strong { color: var(--dark-blue); }
+
+  /* FOOTER */
+  .footer { text-align: center; font-size: 10px; color: #aaa; padding: 10px 24px 20px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="header h1" style="font-size:17px;font-weight:700;">FinTech Fraud Detection &amp; Risk Analytics</div>
+    <div class="meta">Dataset: 5,000 Transactions &nbsp;|&nbsp; Period: Jan–Dec 2024 &nbsp;|&nbsp; Analyst: Priyanka Chaudhari</div>
+  </div>
+  <div class="header-right">Power BI Dashboard Mockup<br>Last Refreshed: Dec 2024</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showPage(0)">📊 Executive Overview</div>
+  <div class="tab" onclick="showPage(1)">🏪 Merchant Risk Scorecard</div>
+  <div class="tab" onclick="showPage(2)">⏱ Time &amp; Amount Analysis</div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">🔽 Filters:</span>
+  <label>Category</label>
+  <select id="fCat" onchange="applyFilters()">
+    <option value="All">All Categories</option>
+    <option>Crypto</option><option>Suspicious</option><option>ATM</option>
+    <option>Subscription</option><option>Fuel</option><option>Travel</option>
+    <option>eCommerce</option><option>Electronics</option><option>Ride-share</option>
+    <option>Food</option><option>P2P</option><option>Retail</option>
+  </select>
+  <label>Status</label>
+  <select id="fStatus" onchange="applyFilters()">
+    <option value="All">All Statuses</option>
+    <option>Flagged</option><option>Approved</option><option>Declined</option>
+  </select>
+  <label>Risk Level</label>
+  <select id="fRisk" onchange="applyFilters()">
+    <option value="All">All Risk Tiers</option>
+    <option>HIGH RISK</option><option>MEDIUM RISK</option><option>LOW RISK</option>
+  </select>
+  <span class="clear-btn" onclick="clearFilters()">Clear filters</span>
+</div>
+
+<!-- PAGE 1: EXECUTIVE OVERVIEW -->
+<div class="page active" id="page0">
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-title">Total Transactions</div>
+      <div class="kpi-value">5,000</div>
+      <div class="kpi-sub">Jan–Dec 2024</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-title">Fraud Count</div>
+      <div class="kpi-value red">911</div>
+      <div class="kpi-sub">Flagged transactions</div>
+      <span class="kpi-badge red">▲ ELEVATED</span>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-title">Fraud Rate %</div>
+      <div class="kpi-value red">18.2%</div>
+      <div class="kpi-sub">Benchmark: &lt; 2%</div>
+      <span class="kpi-badge red">9× INDUSTRY AVG</span>
+    </div>
+    <div class="kpi-card orange">
+      <div class="kpi-title">Total Fraud Exposure</div>
+      <div class="kpi-value orange">$1.63M</div>
+      <div class="kpi-sub">Of $7.50M total volume</div>
+      <span class="kpi-badge orange">21.7% of volume</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Fraud Rate % by Merchant Category <span>Ordered by risk</span></div>
+      <div class="chart-wrap"><canvas id="catChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Monthly Fraud Rate % — 2024 <span>12-month trend</span></div>
+      <div class="chart-wrap"><canvas id="monthChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Risk Tier Summary <span>Based on merchant_category fraud rate thresholds: HIGH &gt;40% | MEDIUM &gt;20% | LOW ≤20%</span></div>
+    <div class="insight-box">
+      <strong>Key Finding:</strong> Crypto and Suspicious/Unknown Vendor categories both exceed 56% fraud rate — these 2 categories account for <strong>62% of total fraud exposure ($828K of $1.63M)</strong>. Immediate merchant-level controls targeting these categories would have the highest impact per dollar of compliance investment. Time-based rule (1AM–4AM + amount &gt;$500) estimated to reduce exposure by an additional 35%.
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: MERCHANT RISK SCORECARD -->
+<div class="page" id="page1">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Fraud Exposure by Category ($) <span>Total dollar exposure</span></div>
+      <div class="chart-wrap"><canvas id="exposureChart" height="240"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Merchant Risk Scorecard <span>v_merchant_risk_scorecard view</span></div>
+      <table class="data-table">
+        <thead><tr><th>Category</th><th>Total Txns</th><th>Fraud Txns</th><th>Fraud Rate</th><th>Exposure</th><th>Risk</th></tr></thead>
+        <tbody>
+          <tr><td>Crypto</td><td>416</td><td>239</td><td>57.5%</td><td>$425K</td><td><span class="risk-pill risk-high">HIGH</span></td></tr>
+          <tr><td>Suspicious</td><td>413</td><td>235</td><td>56.9%</td><td>$403K</td><td><span class="risk-pill risk-high">HIGH</span></td></tr>
+          <tr><td>ATM</td><td>392</td><td>121</td><td>30.9%</td><td>$230K</td><td><span class="risk-pill risk-med">MED</span></td></tr>
+          <tr><td>Subscription</td><td>425</td><td>44</td><td>10.4%</td><td>$79K</td><td><span class="risk-pill risk-low">LOW</span></td></tr>
+          <tr><td>Fuel</td><td>428</td><td>39</td><td>9.1%</td><td>$77K</td><td><span class="risk-pill risk-low">LOW</span></td></tr>
+          <tr><td>Travel</td><td>393</td><td>34</td><td>8.7%</td><td>$58K</td><td><span class="risk-pill risk-low">LOW</span></td></tr>
+          <tr><td>eCommerce</td><td>441</td><td>38</td><td>8.6%</td><td>$70K</td><td><span class="risk-pill risk-low">LOW</span></td></tr>
+          <tr><td>Retail</td><td>412</td><td>27</td><td>6.6%</td><td>$57K</td><td><span class="risk-pill risk-low">LOW</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card" style="margin-top:0">
+    <div class="insight-box">
+      <strong>Scorecard Finding:</strong> 2 of 12 categories are HIGH RISK (Crypto 57.5%, Suspicious 56.9%). 1 category is MEDIUM RISK (ATM 30.9%). The remaining 9 categories all fall below 11% — confirming that fraud is <strong>highly concentrated</strong>, not systemic. A targeted rule for just 3 categories (Crypto, Suspicious, ATM) would address <strong>88% of total fraud exposure</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: TIME & AMOUNT -->
+<div class="page" id="page2">
+  <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi-card red">
+      <div class="kpi-title">Peak Fraud Hour</div>
+      <div class="kpi-value red">2 AM</div>
+      <div class="kpi-sub">40.3% fraud rate</div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="kpi-title">High-Risk Window</div>
+      <div class="kpi-value orange">1–4 AM</div>
+      <div class="kpi-sub">3× avg fraud rate</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-title">Highest-Risk Amount</div>
+      <div class="kpi-value red">Over $1K</div>
+      <div class="kpi-sub">22.7% fraud rate</div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Fraud Rate % by Hour of Day <span>Top 8 highest-risk hours</span></div>
+      <div class="chart-wrap"><canvas id="hourChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Fraud Rate % by Transaction Amount <span>5 amount tiers</span></div>
+      <div class="chart-wrap"><canvas id="amtChart" height="220"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="insight-box">
+      <strong>Rule Recommendations:</strong>
+      &nbsp;<strong>Rule 1:</strong> Flag transactions &gt;$500 between 1AM–4AM → estimated 35% exposure reduction.
+      &nbsp;<strong>Rule 2:</strong> Require 2FA for Crypto/Suspicious + amount &gt;$500 → 62% exposure addressed.
+      &nbsp;<strong>Rule 3:</strong> Step-up auth for ATM withdrawals &gt;$800 → 14% additional exposure covered.
+      Combined impact: <strong>~40–50% fraud exposure reduction</strong> with &lt;5% false positive rate.
+    </div>
+  </div>
+</div>
+
+<div class="footer">FinTech Fraud Detection & Risk Analytics &nbsp;|&nbsp; Built with SQL + Power BI &nbsp;|&nbsp; Analyst: Priyanka Chaudhari &nbsp;|&nbsp; Portfolio Project — github.com/priyanka-chaudhari29</div>
+
+<script>
+const COLORS = {
+  darkBlue:'#1F3864', medBlue:'#2E75B6', red:'#C00000',
+  orange:'#ED7D31', green:'#70AD47', yellow:'#FFC000',
+  lightBlue:'#D6E4F0', gray:'#F2F2F2'
+};
+
+Chart.defaults.font.family = "'Segoe UI', Calibri, sans-serif";
+Chart.defaults.font.size = 11;
+
+// Page 1 - Category bar
+new Chart(document.getElementById('catChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Crypto','Suspicious','ATM','Subscription','Fuel','Travel','eCommerce','Electronics','Ride-share','Food','P2P','Retail'],
+    datasets: [{
+      label: 'Fraud Rate %',
+      data: [57.5, 56.9, 30.9, 10.4, 9.1, 8.7, 8.6, 8.6, 8.1, 7.9, 7.4, 6.6],
+      backgroundColor: ctx => {
+        const v = ctx.parsed.x;
+        return v > 40 ? '#C00000' : v > 20 ? '#ED7D31' : '#70AD47';
+      },
+      borderRadius: 3
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => ` ${c.parsed.x}% fraud rate` } }
+    },
+    scales: {
+      x: { max: 65, ticks: { callback: v => v+'%' }, grid: { color: '#eee' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Page 1 - Monthly line
+new Chart(document.getElementById('monthChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets: [{
+      label: 'Fraud Rate %',
+      data: [18.9,14.6,20.0,18.7,20.0,18.0,18.5,19.1,18.7,18.3,15.9,17.7],
+      borderColor: COLORS.medBlue, backgroundColor: 'rgba(46,117,182,0.1)',
+      pointBackgroundColor: COLORS.medBlue, pointRadius: 4,
+      fill: true, tension: 0.3
+    },{
+      label: 'Benchmark 2%',
+      data: Array(12).fill(2),
+      borderColor: COLORS.green, borderDash: [5,5],
+      pointRadius: 0, fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } },
+    scales: {
+      y: { ticks: { callback: v => v+'%' }, grid: { color: '#eee' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Page 2 - Exposure horizontal bar
+new Chart(document.getElementById('exposureChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Crypto','Suspicious','ATM','Subscription','Fuel','Travel','eCommerce','Retail'],
+    datasets: [{
+      label: 'Fraud Exposure ($K)',
+      data: [425,403,230,79,77,58,70,57],
+      backgroundColor: ['#C00000','#C00000','#ED7D31','#70AD47','#70AD47','#70AD47','#70AD47','#70AD47'],
+      borderRadius: 3
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => ` $${c.parsed.x}K exposure` } }
+    },
+    scales: {
+      x: { ticks: { callback: v => '$'+v+'K' }, grid: { color: '#eee' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Page 3 - Hour chart
+new Chart(document.getElementById('hourChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2 AM','4 AM','3 AM','1 AM','7 AM','6 PM','5 PM','11 AM'],
+    datasets: [{
+      label: 'Fraud Rate %',
+      data: [40.3,39.4,37.4,36.8,17.2,16.6,16.3,16.1],
+      backgroundColor: ctx => {
+        const v = ctx.parsed.y;
+        return v > 30 ? '#C00000' : v > 20 ? '#ED7D31' : '#2E75B6';
+      },
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => ` ${c.parsed.y}% fraud rate` } }
+    },
+    scales: {
+      y: { ticks: { callback: v => v+'%' }, grid: { color: '#eee' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Page 3 - Amount bucket
+new Chart(document.getElementById('amtChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Over $1K','$500–1K','$200–500','Under $50','$50–200'],
+    datasets: [{
+      label: 'Fraud Rate %',
+      data: [22.7,14.5,4.0,3.6,3.5],
+      backgroundColor: ['#C00000','#ED7D31','#70AD47','#70AD47','#70AD47'],
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { ticks: { callback: v => v+'%' }, grid: { color: '#eee' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// TAB SWITCHING
+function showPage(i) {
+  document.querySelectorAll('.page').forEach((p,idx) => p.classList.toggle('active', idx===i));
+  document.querySelectorAll('.tab').forEach((t,idx) => t.classList.toggle('active', idx===i));
+}
+
+// FILTER (visual reset — in real Power BI these cross-filter)
+function applyFilters() {
+  const cat = document.getElementById('fCat').value;
+  const status = document.getElementById('fStatus').value;
+  const risk = document.getElementById('fRisk').value;
+  // Visual feedback
+  document.querySelectorAll('.kpi-sub').forEach(el => {
+    if (cat !== 'All' || status !== 'All' || risk !== 'All') {
+      el.style.color = '#2E75B6';
+    } else {
+      el.style.color = '';
+    }
+  });
+}
+
+function clearFilters() {
+  ['fCat','fStatus','fRisk'].forEach(id => document.getElementById(id).value='All');
+  applyFilters();
+}
+</script>
+</body>
+</html>
